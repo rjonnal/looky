@@ -4,6 +4,19 @@ from components import Location,Target
 import time
 
 pygame.init()
+
+# print pygame.KMOD_NONE
+# mods = pygame.key.get_mods()
+# print bin(mods)
+# sys.exit()
+# if mods & pygame.KMOD_NUM:
+#     sys.exit('Please turn off the NUM LOCK and try again.')
+# if mods & pygame.KMOD_CAPS:
+#     sys.exit('Please turn off the CAPS LOCK and try again.')
+                
+
+
+
 pygame.key.set_repeat(100,50)
 clock = pygame.time.Clock()
 
@@ -18,25 +31,20 @@ tar = Target(screen,loc)
 k = 0
 t0 = time.time()
 
+
+key_triples = [
+    (pygame.K_ESCAPE,None,sys.exit),
+    (pygame.K_LEFT,~pygame.KMOD_CTRL,tar.left),
+    (pygame.K_LEFT,pygame.KMOD_CTRL,tar.c_left)]
+
 key_dict = {}
-key_dict[(pygame.K_ESCAPE,pygame.KMOD_NONE)] = sys.exit
 
-key_dict[(pygame.K_LEFT,pygame.KMOD_NONE)] = tar.left
-key_dict[(pygame.K_RIGHT,pygame.KMOD_NONE)] = tar.right
-key_dict[(pygame.K_UP,pygame.KMOD_NONE)] = tar.up
-key_dict[(pygame.K_DOWN,pygame.KMOD_NONE)] = tar.down
+for key,mod,action in key_triples:
+    if key in key_dict.keys():
+        key_dict[key].append((mod,action))
+    else:
+        key_dict[key] = [(mod,action)]
 
-key_dict[(pygame.K_LEFT,pygame.KMOD_CTRL)] = tar.c_left
-key_dict[(pygame.K_RIGHT,pygame.KMOD_CTRL)] = tar.c_right
-key_dict[(pygame.K_UP,pygame.KMOD_CTRL)] = tar.c_up
-key_dict[(pygame.K_DOWN,pygame.KMOD_CTRL)] = tar.c_down
-
-key_dict[(pygame.K_LEFT,ALT)] = tar.c_left
-key_dict[(pygame.K_RIGHT,ALT)] = tar.c_right
-key_dict[(pygame.K_UP,ALT)] = tar.c_up
-key_dict[(pygame.K_DOWN,ALT)] = tar.c_down
-
-key_dict[(pygame.K_c,pygame.KMOD_NONE)] = tar.center
 
 while 1:
     clock.tick(30)
@@ -44,9 +52,16 @@ while 1:
         print event
         if event.type == pygame.QUIT: sys.exit()
         elif event.type == pygame.KEYDOWN:
+            mods = pygame.key.get_mods()
+            print 'mods',mods
             try:
-                func = key_dict[(event.key,event.mod)]
-                func()
+                modpairs = key_dict[event.key]
+                for mod,action in modpairs:
+                    print mod,mods,mods & mod
+                sys.exit()
+                func,mod = key_dict[event.key]
+                if (mods and mod & mods) or (not mods):
+                    func()
             except Exception as e:
                 print 'oops'
                 print event.key,event.mod
@@ -66,9 +81,8 @@ while 1:
     # draw here
 
     lines = tar.get_lines()
-
     for pt1,pt2 in lines:
-        pygame.draw.line(screen,WHITE,pt1,pt2,5)
+        pygame.draw.line(screen,WHITE,pt1,pt2,1)
     
     pygame.display.flip()
     
