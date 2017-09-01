@@ -1,6 +1,7 @@
 from constants import *
 import math
 import sys
+import pygame
 
 class Location:
 
@@ -22,7 +23,15 @@ class Location:
         xdeg = (xpx-self.x0)/(self.pixels_per_degree)
         ydeg = (ypx-self.y0)/(self.pixels_per_degree)
         return xdeg,ydeg
-        
+
+    def offset_left(self):
+        self.x0 = self.x0 - self.offset_step_px
+    def offset_right(self):
+        self.x0 = self.x0 + self.offset_step_px
+    def offset_up(self):
+        self.y0 = self.y0 - self.offset_step_px
+    def offset_down(self):
+        self.y0 = self.y0 + self.offset_step_px
 
 class Target:
 
@@ -35,6 +44,17 @@ class Target:
         self.step = 1.0
         self.c_step = 2.0
 
+    def __str__(self):
+        if self.loc.eye==RIGHT:
+            eye = 'right'
+        else:
+            eye = 'left'
+            
+        outlist = ['location (%0.1f,%0.1f)'%(self.x,self.y),
+                'offset (%0.1f,%0.1f)'%(self.loc.x0,self.loc.y0),
+                'eye %s'%eye]
+        return '\n'.join(outlist)
+        
     def get_lines(self):
         lines = []
         for theta in range(0,180,45):
@@ -65,6 +85,48 @@ class Target:
         self.y = self.y - self.c_step
     def c_down(self):
         self.y = self.y + self.c_step
+
+    def a_left(self):
+        self.loc.offset_left()
+    def a_right(self):
+        self.loc.offset_right()
+    def a_up(self):
+        self.loc.offset_up()
+    def a_down(self):
+        self.loc.offset_down()
+        
     def center(self):
         self.y = 0.0
         self.x = 0.0
+
+
+class Modstate:
+
+    def __init__(self,state_string=''):
+        self.ctrl = state_string.lower().find('ctrl')>-1
+        self.shift = state_string.lower().find('shift')>-1
+        self.alt = state_string.lower().find('alt')>-1
+        self.any = state_string.lower().find('any')>-1
+        
+    def __str__(self):
+        out = []
+        if self.shift: out.append('shift')
+        if self.alt: out.append('alt')
+        if self.ctrl: out.append('ctrl')
+        if self.any: out.append('any')
+        if len(out):
+            out = '_'.join(out)
+        else:
+            out = 'none'
+        return out
+
+    def __eq__(self,ms):
+        return (self.ctrl==ms.ctrl and self.alt==ms.alt and self.shift==ms.shift) or self.any
+
+    def update(self):
+        mods = pygame.key.get_mods()
+        self.ctrl = not (mods & pygame.KMOD_CTRL)==0
+        self.alt = not (mods & pygame.KMOD_ALT)==0
+        self.shift = not (mods & pygame.KMOD_SHIFT)==0
+    
+

@@ -1,6 +1,6 @@
 import sys, pygame
 from constants import *
-from components import Location,Target
+from components import Location,Target,Modstate
 import time
 
 pygame.init()
@@ -14,7 +14,7 @@ pygame.init()
 # if mods & pygame.KMOD_CAPS:
 #     sys.exit('Please turn off the CAPS LOCK and try again.')
                 
-
+myfont = pygame.font.SysFont('Times New Roman', 30)
 pygame.key.set_repeat(100,50)
 clock = pygame.time.Clock()
 
@@ -29,45 +29,50 @@ tar = Target(screen,loc)
 k = 0
 t0 = time.time()
 
-
 key_triples = [
-    (pygame.K_ESCAPE,None,sys.exit),
-    (pygame.K_LEFT,~pygame.KMOD_CTRL,tar.left),
-    (pygame.K_LEFT,pygame.KMOD_CTRL,tar.c_left)]
+    (pygame.K_ESCAPE,Modstate('any'),sys.exit),
+    (pygame.K_LEFT,Modstate(''),tar.left),
+    (pygame.K_RIGHT,Modstate(''),tar.right),
+    (pygame.K_UP,Modstate(''),tar.up),
+    (pygame.K_DOWN,Modstate(''),tar.down),
+    (pygame.K_LEFT,Modstate('ctrl'),tar.c_left),
+    (pygame.K_RIGHT,Modstate('ctrl'),tar.c_right),
+    (pygame.K_UP,Modstate('ctrl'),tar.c_up),
+    (pygame.K_DOWN,Modstate('ctrl'),tar.c_down),
+    (pygame.K_LEFT,Modstate('alt'),tar.a_left),
+    (pygame.K_RIGHT,Modstate('alt'),tar.a_right),
+    (pygame.K_UP,Modstate('alt'),tar.a_up),
+    (pygame.K_DOWN,Modstate('alt'),tar.a_down),
+    ]
 
+# convert to a dictionary for efficient lookup:
 key_dict = {}
-
-for key,mod,action in key_triples:
+for key,key_ms,func in key_triples:
     if key in key_dict.keys():
-        key_dict[key].append((mod,action))
+        key_dict[key].append((key_ms,func))
     else:
-        key_dict[key] = [(mod,action)]
-
+        key_dict[key] = [(key_ms,func)]
+        
+current_ms = Modstate()
 
 while 1:
-    clock.tick(30)
+    #clock.tick(30)
     for event in pygame.event.get():
-        print event
         if event.type == pygame.QUIT: sys.exit()
         elif event.type == pygame.KEYDOWN:
-            mods = pygame.key.get_mods()
-            print 'mods',mods
+            current_ms.update()
             try:
-                modpairs = key_dict[event.key]
-                for mod,action in modpairs:
-                    print mod,mods,mods & mod
-                sys.exit()
-                func,mod = key_dict[event.key]
-                if (mods and mod & mods) or (not mods):
-                    func()
+                tups = key_dict[event.key]
+                for key_ms,func in tups:
+                    #print key_ms,current_ms,key_ms==current_ms,func
+                    if key_ms==current_ms:
+                        print tar
+                        func()
+                        break
             except Exception as e:
-                print 'oops'
-                print event.key,event.mod
-                #print key_dict
-                #sys.exit()
+                print e
                 
         elif event.type == pygame.MOUSEBUTTONUP:
-            print event
             mousex,mousey = event.pos
             x_deg,y_deg = loc.px2deg(mousex,mousey)
             tar.x = x_deg
@@ -81,7 +86,12 @@ while 1:
     lines = tar.get_lines()
     for pt1,pt2 in lines:
         pygame.draw.line(screen,WHITE,pt1,pt2,1)
-    
+
+    msg_list = tar.__str__().split('\n')
+    for idx,msg in enumerate(msg_list):
+        textsurface = myfont.render(msg, False, (255, 255, 255))
+        screen.blit(textsurface,(0,0+idx*30))
+        
     pygame.display.flip()
     
     k = k + 1

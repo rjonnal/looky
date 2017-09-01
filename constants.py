@@ -8,5 +8,6 @@ RIGHT = -1
 LEFT = 1
 
 # keys
-CTRL = 64
-ALT = 1
+CTRL = 2
+ALT = 3
+SHIFT = 1
