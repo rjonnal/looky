@@ -18,8 +18,8 @@ myfont = pygame.font.SysFont('Times New Roman', 30)
 pygame.key.set_repeat(100,50)
 clock = pygame.time.Clock()
 
-#size = width, height = pygame.display.list_modes()[0]
-size = width, height = 512, 512
+size = width, height = pygame.display.list_modes()[0]
+#size = width, height = 512, 512
 black = 0, 0, 0
 screen = pygame.display.set_mode(size)
 
