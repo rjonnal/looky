@@ -15,8 +15,6 @@ pygame.init()
 #     sys.exit('Please turn off the CAPS LOCK and try again.')
                 
 
-
-
 pygame.key.set_repeat(100,50)
 clock = pygame.time.Clock()
 
