@@ -4,10 +4,6 @@ RED = (255, 0, 0)
 GREEN = ( 0, 255, 0)
 BLUE = ( 0, 0, 255)
 
-RIGHT = -1
-LEFT = 1
+RIGHT = 1
+LEFT = -1
 
-# keys
-CTRL = 2
-ALT = 3
-SHIFT = 1
