@@ -4,27 +4,49 @@ from components import Target,Modstate
 import time
 import looky_config as lcfg
 
+# load parameters from config file
 line_color = lcfg.LINE_COLOR
 background_color = lcfg.BACKGROUND_COLOR
 font = lcfg.FONT
 font_size = lcfg.FONT_SIZE
-
+fps = lcfg.MAX_FPS
+try:
+    display_mode_index = lcfg.DEFAULT_DISPLAY_MODE
+except Exception as e:
+    display_mode_index = 0
+    
+# initialize pygame, set some initial parameters:
 pygame.init()
 myfont = pygame.font.SysFont(font, font_size)
 pygame.key.set_repeat(100,50)
 clock = pygame.time.Clock()
 
-size = width, height = pygame.display.list_modes()[0]
+# set up the screen using the desired display mode:
+display_modes = pygame.display.list_modes()
+size = width, height = display_modes[display_mode_index]
+n_display_modes = len(display_modes)
 screen = pygame.display.set_mode(size)
 hwidth = width//2
 hheight = height//2
 
-pygame.display.toggle_fullscreen()
 
+# initialize the Target object:
 tar = Target()
-fps = lcfg.MAX_FPS
 
-help_on = False
+# this function is used to cycle through possible
+# display modes; time_of_last_mode_change is used
+# to display the mode for a second as the user
+# is cycling:
+time_of_last_mode_change = 0
+def cycle_modes():
+    """Cycle through display modes."""
+    global screen,size,width,height,hwidth,hheight,display_modes,display_mode_index,n_display_modes,time_of_last_mode_change
+    time_of_last_mode_change = time.time()
+    display_mode_index = (display_mode_index+1)%n_display_modes
+    size = width, height = display_modes[display_mode_index]
+    screen = pygame.display.set_mode(size)
+    hwidth = width//2
+    hheight = height//2
 
 def exit():
     """Exit via sys.exit()."""
@@ -60,6 +82,8 @@ key_triples = [
     (pygame.K_EQUALS,Modstate('ctrl'),tar.increase_radius),
     (pygame.K_MINUS,Modstate('ctrl'),tar.decrease_radius),
     (pygame.K_SPACE,Modstate(''),tar.switch_eye),
+    (pygame.K_m,Modstate(''),cycle_modes),
+    (pygame.K_c,Modstate(''),tar.center),
     (pygame.K_SLASH,Modstate(''),toggle_help)
     ]
 
@@ -85,18 +109,43 @@ for key,key_ms,func in key_triples:
     else:
         key_dict[key] = [(key_ms,func)]
         
+
+# note the time the loop starts:
+t0 = time.time()
+# a couple of booleans to keep track of state:
+printed = False
+help_on = False
+
+# current_ms keeps track of the currently pressed
+# keyboard modifiers; its state is updated in the
+# event loop below, using its own call to
+# pygame.key.get_mods
 current_ms = Modstate()
 
-t0 = time.time()
-printed = False
+log = open('log.txt','wa')
 
 while 1:
-    clock.tick(lcfg.MAX_FPS)
+    # throttle the frame rate to the lcfg value:
+    clock.tick(fps)
+    # check the current fps:
     fps = clock.get_fps()
+
+    # get the system time and calculate the
+    # age of the process and the time since
+    # the last display mode change:
     t = time.time()
+    mode_age = t-time_of_last_mode_change
     age = t-t0
+    # set mode_changed to true if the mode
+    # was changed in the last second:
+    mode_changed = mode_age<1.0
+
     state_changed = False
-    
+
+    # after the target has been at one location
+    # for more than 5 seconds, if the location
+    # hasn't been printed to the log, print
+    # it now.
     if not printed and age>5.0:
         print age
         print tar
@@ -125,7 +174,7 @@ while 1:
             tar.x = x_deg
             tar.y = y_deg
 
-    if not state_changed:
+    if not state_changed and not mode_changed:
         continue
 
     screen.fill(background_color)
@@ -152,6 +201,9 @@ while 1:
     if alt_on:
         msg_list.append(tar.msg_offset_location())
         msg_colors.append(lcfg.OFFSET_COLOR)
+    if mode_changed:
+        msg_list.append('%d x %d (mode %d)'%(width,height,display_mode_index))
+        msg_colors.append(lcfg.WHITE)
     if help_on:
         msg_list = msg_list + help_strings
         msg_colors = msg_colors + [lcfg.HELP_COLOR]*len(help_strings)

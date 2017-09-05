@@ -3,7 +3,11 @@ from colors import *
 
 MAX_FPS = 60
 FONT = 'Courier'
-FONT_SIZE = 45
+FONT_SIZE = 24
+
+# Use the 'm' key to cycle through display modes. If there's
+# a preferable one, note its number and write it here.
+DEFAULT_DISPLAY_MODE = 1
 
 # Offsets for aligning the target origin with the imaging beam
 X_OFFSET_DEG = 0.0
