@@ -85,6 +85,19 @@ class Target:
     def msg_abs_location(self):
         return '%0.3f,%0.3f (abs)'%(self.x_deg,self.y_deg)
 
+
+    def msg_log_entry(self):
+        if self.eye==RIGHT:
+            eye = 'right'
+        else:
+            eye = 'left'
+
+        hquad,vquad = self.get_quadrant()
+        hq = hquad[0]
+        vq = vquad[0]
+
+        return '%0.3f %s\t%0.3f %s\t%s eye'%(abs(self.x_deg),hq,abs(self.y_deg),vq,eye)
+        
     def msg_ret_location(self):
         if self.eye==RIGHT:
             eye = 'right'

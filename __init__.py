@@ -3,6 +3,7 @@ from constants import *
 from components import Target,Modstate
 import time
 import looky_config as lcfg
+import datetime
 
 # load parameters from config file
 line_color = lcfg.LINE_COLOR
@@ -14,7 +15,18 @@ try:
     display_mode_index = lcfg.DEFAULT_DISPLAY_MODE
 except Exception as e:
     display_mode_index = 0
+
+# open a log file and define a logging function:
+try:
+    logfile = open('log.txt','a')
+except Exception as e:
+    logfile = open('log.txt','wb')
     
+def log(text):
+    now = datetime.datetime.now()
+    logfile.write('%s\t%s\n'%(now.strftime('%Y-%m-%d\t%H:%M:%S\t'),text))
+
+   
 # initialize pygame, set some initial parameters:
 pygame.init()
 myfont = pygame.font.SysFont(font, font_size)
@@ -122,20 +134,26 @@ help_on = False
 # pygame.key.get_mods
 current_ms = Modstate()
 
-log = open('log.txt','wa')
+n_frames = 0
 
 while 1:
+    n_frames = n_frames + 1
     # throttle the frame rate to the lcfg value:
     clock.tick(fps)
     # check the current fps:
     fps = clock.get_fps()
-
+    print fps
     # get the system time and calculate the
     # age of the process and the time since
     # the last display mode change:
     t = time.time()
     mode_age = t-time_of_last_mode_change
     age = t-t0
+    
+    if (age):
+        other_fps = float(n_frames)/float(age)
+    else:
+        other_fps = -1
     # set mode_changed to true if the mode
     # was changed in the last second:
     mode_changed = mode_age<1.0
@@ -147,9 +165,7 @@ while 1:
     # hasn't been printed to the log, print
     # it now.
     if not printed and age>5.0:
-        print age
-        print tar
-        print
+        log(tar.msg_log_entry())
         printed = True
         
     for event in pygame.event.get():
@@ -196,7 +212,7 @@ while 1:
             
     msg_list = [tar.msg_ret_location(),tar.msg_abs_location()]
     msg_colors = [lcfg.WHITE,lcfg.GRAY]
-    msg_list.append('%0.1f fps'%fps)
+    msg_list.append('%0.1f fps'%other_fps)
     msg_colors.append(lcfg.GRAY)
     if alt_on:
         msg_list.append(tar.msg_offset_location())
