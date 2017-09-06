@@ -12,10 +12,14 @@ If you have a pre-existing Python installation you want to use, or if you want a
 
 2. [Pygame](http://www.pygame.org/download.shtml). Make sure you get the version matching your Python installation.
 
-### Installation
+### Installation and use
 
 1. Clone this repository with git: `git clone https://github.com/rjonnal/looky` or download the zip file and unzip.
 
 2. In the resulting directory, copy `looky_config_template.py` to `looky_config.py`, and edit it the latter as you wish. In particular, the distance between the viewer and screen (`SCREEN_DISTANCE_M`) must be set, as well as `VERTICAL_ORIENTATION` and `HORIZONTAL_ORIENTATION`.
 
-3. 
+3. Run **calibrate** or issue `python calibrate.py`. Stick a standard (3-inch square) Post-It note to your screen and click two adjacent corners. This measures and records the monitor's pitch (DPI) in a file called `dpi.txt`.
+
+4. Run **looky** (or **looky.bat** on Windows) or issue `python __init__.py`.
+
+5. To toggle the help menu, press the `/` key.
