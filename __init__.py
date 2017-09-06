@@ -1,8 +1,18 @@
 import sys, pygame
+import time
+try:
+    import looky_config as lcfg
+except ImportError:
+    answer = raw_input('looky_config.py does not exist. Should it be automatically generated? [y/n] ').lower()
+    if answer=='y':
+        shutil.copyfile('./looky_config_template.py','./looky_config.py')
+        import looky_config as lcfg
+    else:
+        sys.exit('Please create looky_config.py from looky_config_template.py.')
+        
 from constants import *
 from components import Target,Modstate
-import time
-import looky_config as lcfg
+    
 import datetime
 
 # load parameters from config file
@@ -35,6 +45,8 @@ clock = pygame.time.Clock()
 
 # set up the screen using the desired display mode:
 display_modes = pygame.display.list_modes()
+# check if the requested index is too high
+display_mode_index = min(display_mode_index,len(display_modes)-1)
 size = width, height = display_modes[display_mode_index]
 n_display_modes = len(display_modes)
 screen = pygame.display.set_mode(size)
@@ -85,14 +97,18 @@ key_triples = [
     (pygame.K_RIGHT,Modstate('ctrl'),tar.small_right),
     (pygame.K_UP,Modstate('ctrl'),tar.small_up),
     (pygame.K_DOWN,Modstate('ctrl'),tar.small_down),
+    (pygame.K_LEFT,Modstate('shift-ctrl'),tar.very_small_left),
+    (pygame.K_RIGHT,Modstate('shift-ctrl'),tar.very_small_right),
+    (pygame.K_UP,Modstate('shift-ctrl'),tar.very_small_up),
+    (pygame.K_DOWN,Modstate('shift-ctrl'),tar.very_small_down),
     (pygame.K_LEFT,Modstate('alt'),tar.offset_left),
     (pygame.K_RIGHT,Modstate('alt'),tar.offset_right),
     (pygame.K_UP,Modstate('alt'),tar.offset_up),
     (pygame.K_DOWN,Modstate('alt'),tar.offset_down),
-    (pygame.K_EQUALS,Modstate(''),tar.increment_line_width),
-    (pygame.K_MINUS,Modstate(''),tar.decrement_line_width),
-    (pygame.K_EQUALS,Modstate('ctrl'),tar.increase_radius),
-    (pygame.K_MINUS,Modstate('ctrl'),tar.decrease_radius),
+    (pygame.K_EQUALS,Modstate('ctrl'),tar.increment_line_width),
+    (pygame.K_MINUS,Modstate('ctrl'),tar.decrement_line_width),
+    (pygame.K_EQUALS,Modstate(''),tar.increase_radius),
+    (pygame.K_MINUS,Modstate(''),tar.decrease_radius),
     (pygame.K_SPACE,Modstate(''),tar.switch_eye),
     (pygame.K_m,Modstate(''),cycle_modes),
     (pygame.K_c,Modstate(''),tar.center),
@@ -102,14 +118,21 @@ key_triples = [
 # Use the keys and function docstrings to make a help menu.
 help_strings = []
 for kt in key_triples:
+    if kt[0] in [pygame.K_RIGHT,pygame.K_UP,pygame.K_DOWN]:
+        continue
+    elif kt[0]==pygame.K_LEFT:
+        key_name = 'arrow'
+    else:
+        key_name = pygame.key.name(kt[0])
+        
     modifier = kt[1].__str__()
     if modifier in ['any','none']:
         modifier = ''
     else:
         modifier = modifier+'-'
     doc = kt[2].__doc__
-    lead = '%s%s:'%(modifier,pygame.key.name(kt[0]))
-    while len(lead)<12:
+    lead = '%s%s:'%(modifier,key_name)
+    while len(lead)<18:
         lead = lead+' '
     help_strings.append('%s %s'%(lead,doc))
 
@@ -142,7 +165,7 @@ while 1:
     clock.tick(fps)
     # check the current fps:
     fps = clock.get_fps()
-    print fps
+    
     # get the system time and calculate the
     # age of the process and the time since
     # the last display mode change:
@@ -159,7 +182,6 @@ while 1:
     mode_changed = mode_age<1.0
 
     state_changed = False
-
     # after the target has been at one location
     # for more than 5 seconds, if the location
     # hasn't been printed to the log, print
@@ -172,6 +194,7 @@ while 1:
         t0 = time.time()
         printed = False
         state_changed = True
+        mouse_state_changed = False
         current_ms.update()
         alt_on = current_ms.alt
         if event.type == pygame.QUIT: sys.exit()
@@ -184,13 +207,20 @@ while 1:
                         break
             except Exception as e:
                 pass
+        elif event.type == pygame.MOUSEMOTION:
+            mouse_state_changed = True
+            mousex,mousey = event.pos
+            mousex = mousex-hwidth
+            mousey = mousey-hheight
+            x_deg,y_deg = tar.px2deg(mousex,mousey)
         elif event.type == pygame.MOUSEBUTTONUP:
             mousex,mousey = event.pos
-            x_deg,y_deg = loc.px2deg(mousex,mousey)
-            tar.x = x_deg
-            tar.y = y_deg
+            mousex = mousex-hwidth
+            mousey = mousey-hheight
+            x_deg,y_deg = tar.px2deg(mousex,mousey)
+            tar.set_position(x_deg,y_deg)
 
-    if not state_changed and not mode_changed:
+    if not state_changed and not mode_changed and not mouse_state_changed:
         continue
 
     screen.fill(background_color)
@@ -203,6 +233,12 @@ while 1:
         dpt2 = (pt2[0]+hwidth,pt2[1]+hheight)
         pygame.draw.line(screen,line_color,dpt1,dpt2,tar.line_width_px)
 
+    if lcfg.EMPTY_CENTER:
+        cx,cy,crad = tar.get_circle()
+        cx = cx+hwidth
+        cy = cy+hheight
+    pygame.draw.circle(screen,lcfg.BACKGROUND_COLOR,(cx,cy),crad,0)
+    
     if alt_on:
         offset_lines = tar.get_offset_lines()
         for pt1,pt2 in offset_lines:
@@ -210,10 +246,15 @@ while 1:
             dpt2 = (pt2[0]+hwidth,pt2[1]+hheight)
             pygame.draw.line(screen,RED,dpt1,dpt2,tar.line_width_px)
             
-    msg_list = [tar.msg_ret_location(),tar.msg_abs_location()]
-    msg_colors = [lcfg.WHITE,lcfg.GRAY]
-    msg_list.append('%0.1f fps'%other_fps)
-    msg_colors.append(lcfg.GRAY)
+    msg_list = [tar.msg_ret_location()]
+    msg_colors = [lcfg.WHITE]
+    #msg_list = [tar.msg_ret_location(),tar.msg_abs_location()]
+    #msg_colors = [lcfg.WHITE,lcfg.GRAY]
+    #msg_list.append('%0.1f fps'%other_fps)
+    #msg_colors.append(lcfg.GRAY)
+    if mouse_state_changed:
+        msg_list.append('%0.3f, %0.3f'%(x_deg,y_deg))
+        msg_colors.append(lcfg.GREEN)
     if alt_on:
         msg_list.append(tar.msg_offset_location())
         msg_colors.append(lcfg.OFFSET_COLOR)

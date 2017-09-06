@@ -5,6 +5,8 @@ MAX_FPS = 60
 FONT = 'Courier'
 FONT_SIZE = 24
 
+SNAP_MOUSE_TO_FINE_GRID = True
+
 # Use the 'm' key to cycle through display modes. If there's
 # a preferable one, note its number and write it here.
 DEFAULT_DISPLAY_MODE = 0
@@ -18,6 +20,7 @@ Y_OFFSET_DEG = 0.0
 # with beam).
 STEP_SIZE_DEG = 1.0
 STEP_FINE_DEG = 1.0/8.0
+STEP_VERY_FINE_DEG = 1.0/16.0
 STEP_OFFSET_DEG = 1.0/8.0
 
 # Screen distance and magnification
@@ -33,6 +36,7 @@ HORIZONTAL_ORIENTATION = 1
 RADIUS_DEG = 1.0
 LINE_WIDTH_PX = 2
 LINE_COLOR = WHITE
-BACKGROUND_COLOR = GRAY5
+BACKGROUND_COLOR = GREEN
 HELP_COLOR = YELLOW4
 OFFSET_COLOR = RED4
+EMPTY_CENTER = 1.0/16.0

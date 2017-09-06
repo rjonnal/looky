@@ -25,11 +25,16 @@ class Target:
 
         self.step = lcfg.STEP_SIZE_DEG
         self.small_step = lcfg.STEP_FINE_DEG
+        self.very_small_step = lcfg.STEP_VERY_FINE_DEG
         self.offset_step = lcfg.STEP_OFFSET_DEG
 
         self.screen_distance_m = lcfg.SCREEN_DISTANCE_M
         self.vflip = lcfg.VERTICAL_ORIENTATION
         self.hflip = lcfg.HORIZONTAL_ORIENTATION
+
+        self.snap = lcfg.SNAP_MOUSE_TO_FINE_GRID
+
+        self.center_rad = lcfg.EMPTY_CENTER
 
         try:
             with open('dpi.txt') as fid:
@@ -48,6 +53,18 @@ class Target:
         ypx = (self.y0_deg+ydeg)*self.pixels_per_degree
         return xpx,ypx
 
+    def set_position(self,xdeg,ydeg):
+        if self.snap:
+            xdeg = round(xdeg*self.step/self.small_step)*self.small_step
+            ydeg = round(ydeg*self.step/self.small_step)*self.small_step
+        self.x_deg = xdeg
+        self.y_deg = ydeg
+    
+    def px2deg(self,xpx,ypx):
+        xdeg = (xpx/self.pixels_per_degree)-self.x0_deg
+        ydeg = (ypx/self.pixels_per_degree)-self.y0_deg
+        return xdeg,ydeg
+    
     def get_quadrant(self):
         hlist = ['NASAL','CENTER','TEMPORAL']
         vlist = ['SUPERIOR','CENTER','INFERIOR']
@@ -96,7 +113,7 @@ class Target:
         hq = hquad[0]
         vq = vquad[0]
 
-        return '%0.3f %s\t%0.3f %s\t%s eye'%(abs(self.x_deg),hq,abs(self.y_deg),vq,eye)
+        return '%0.4f %s\t%0.4f %s\t%s eye'%(abs(self.x_deg),hq,abs(self.y_deg),vq,eye)
         
     def msg_ret_location(self):
         if self.eye==RIGHT:
@@ -108,10 +125,10 @@ class Target:
         hq = hquad[0]
         vq = vquad[0]
 
-        return '%0.3f %s, %0.3f %s (%s eye)'%(abs(self.x_deg),hq,abs(self.y_deg),vq,eye)
+        return '%0.4f %s, %0.4f %s (%s eye)'%(abs(self.x_deg),hq,abs(self.y_deg),vq,eye)
         
     def msg_offset_location(self):
-        return 'offset (%0.3f,%0.3f)'%(self.x0_deg,self.y0_deg)
+        return 'offset (%0.4f,%0.4f)'%(self.x0_deg,self.y0_deg)
 
     
     def get_lines(self):
@@ -128,6 +145,11 @@ class Target:
             lines.append([(x1px,y1px),(x2px,y2px)])
         return lines
 
+    def get_circle(self):
+        x,y = self.deg2px(self.x_deg,self.y_deg)
+        rad,junk = self.deg2px(self.center_rad,0)
+        return int(x),int(y),int(rad)
+
     def get_offset_lines(self):
         lines = []
         for theta in range(0,180,90):
@@ -143,7 +165,7 @@ class Target:
         return lines
     
     def left(self):
-        """Move left full step."""
+        """Move full step."""
         self.x_deg = self.x_deg - self.step
     def right(self):
         """Move right full step."""
@@ -156,7 +178,7 @@ class Target:
         self.y_deg = self.y_deg + self.step
         
     def small_left(self):
-        """Move left fine step."""
+        """Move fine step."""
         self.x_deg = self.x_deg - self.small_step
     def small_right(self):
         """Move right fine step."""
@@ -168,8 +190,21 @@ class Target:
         """Move down fine step."""
         self.y_deg = self.y_deg + self.small_step
         
+    def very_small_left(self):
+        """Move very fine step."""
+        self.x_deg = self.x_deg - self.very_small_step
+    def very_small_right(self):
+        """Move right very fine step."""
+        self.x_deg = self.x_deg + self.very_small_step
+    def very_small_up(self):
+        """Move up very fine step."""
+        self.y_deg = self.y_deg - self.very_small_step
+    def very_small_down(self):
+        """Move down very fine step."""
+        self.y_deg = self.y_deg + self.very_small_step
+        
     def offset_left(self):
-        """Move offset left."""
+        """Move offset."""
         self.x0_deg = self.x0_deg - self.offset_step
     def offset_right(self):
         """Move offset right."""
