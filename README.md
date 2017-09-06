@@ -23,3 +23,5 @@ If you have a pre-existing Python installation you want to use, or if you want a
 4. Run **looky** (or **looky.bat** on Windows) or issue `python __init__.py`.
 
 5. To toggle the help menu, press the `/` key.
+
+6. Use the 'm' key to cycle through display modes until the window size matches your monitor resolution. Note the display mode number (not the actual resolution, but the mode number), in case you want to enter this number in `looky_config.py` as a default display mode.
