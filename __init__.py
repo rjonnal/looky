@@ -42,7 +42,7 @@ except Exception as e:
     
 def log(text):
     now = datetime.datetime.now()
-    logfile.write('%s\t%s\n'%(now.strftime('%Y-%m-%d\t%H:%M:%S\t'),text))
+    logfile.write('%s\t%s\n'%(now.strftime('%Y-%m-%d\t%H:%M:%S'),text))
 
    
 # initialize pygame, set some initial parameters:

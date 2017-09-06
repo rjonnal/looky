@@ -147,7 +147,7 @@ class Target:
 
     def get_circle(self):
         x,y = self.deg2px(self.x_deg,self.y_deg)
-        rad,junk = self.deg2px(self.center_rad,0)
+        rad = self.center_rad*self.pixels_per_degree
         return int(x),int(y),int(rad)
 
     def get_offset_lines(self):
