@@ -1,5 +1,7 @@
-import sys, pygame
+import sys, pygame, shutil, os
 import time
+print dir(pygame)
+
 try:
     import looky_config as lcfg
 except ImportError:
@@ -9,6 +11,13 @@ except ImportError:
         import looky_config as lcfg
     else:
         sys.exit('Please create looky_config.py from looky_config_template.py.')
+if not os.path.exists('./dpi.txt'):
+    answer = raw_input('dpi.txt does not exist. Should calibrate.py be run to determine monitor DPI? [y/n] ').lower()
+    if answer=='y':
+        import calibrate
+        pygame.quit()
+    else:
+        sys.exit('Please run calibrate.py first to establish the monitor DPI, or create a text file dpi.txt containing just this number.')
         
 from constants import *
 from components import Target,Modstate
@@ -197,7 +206,7 @@ while 1:
         mouse_state_changed = False
         current_ms.update()
         alt_on = current_ms.alt
-        if event.type == pygame.QUIT: sys.exit()
+        if event.type == pygame.QUIT: exit()
         elif event.type == pygame.KEYDOWN:
             try:
                 tups = key_dict[event.key]
