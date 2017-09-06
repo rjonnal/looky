@@ -1,1 +1,1 @@
-# looky: a simple fixation target for vision experiments, built with pygame
+# looky: a pygame-based fixation target for vision experiments
