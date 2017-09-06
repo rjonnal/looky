@@ -1,6 +1,5 @@
 import sys, pygame, shutil, os
 import time
-print dir(pygame)
 
 try:
     import looky_config as lcfg
