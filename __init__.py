@@ -120,6 +120,7 @@ key_triples = [
     (pygame.K_SPACE,Modstate(''),tar.switch_eye),
     (pygame.K_m,Modstate(''),cycle_modes),
     (pygame.K_c,Modstate(''),tar.center),
+    (pygame.K_c,Modstate('ctrl'),tar.center_offsets),
     (pygame.K_SLASH,Modstate(''),toggle_help)
     ]
 

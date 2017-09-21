@@ -237,6 +237,12 @@ class Target:
         self.y_deg = 0.0
         self.x_deg = 0.0
 
+    def center_offsets(self):
+        """Center (zero) the offsets."""
+        self.x0_deg = 0.0
+        self.y0_deg = 0.0
+        self.write_offsets()
+
     def increment_line_width(self):
         """Increase line width."""
         self.line_width_px+=1
