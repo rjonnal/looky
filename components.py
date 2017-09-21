@@ -17,8 +17,15 @@ class Target:
 
     def __init__(self):
         self.eye = RIGHT
-        self.x0_deg = lcfg.X_OFFSET_DEG
-        self.y0_deg = lcfg.Y_OFFSET_DEG
+
+        try:
+            with open('offsets.txt') as fid:
+                self.x0_deg = float(fid.readline())
+                self.y0_deg = float(fid.readline())
+        except Exception as e:
+            print e
+            self.x0_deg = lcfg.X_OFFSET_DEG
+            self.y0_deg = lcfg.Y_OFFSET_DEG
 
         self.x_deg = 0.0
         self.y_deg = 0.0
@@ -206,15 +213,24 @@ class Target:
     def offset_left(self):
         """Move offset."""
         self.x0_deg = self.x0_deg - self.offset_step
+        self.write_offsets()
     def offset_right(self):
         """Move offset right."""
         self.x0_deg = self.x0_deg + self.offset_step
+        self.write_offsets()
     def offset_up(self):
         """Move offset up."""
         self.y0_deg = self.y0_deg - self.offset_step
+        self.write_offsets()
     def offset_down(self):
         """Move offset down."""
         self.y0_deg = self.y0_deg + self.offset_step
+        self.write_offsets()
+        
+    def write_offsets(self):
+        with open('offsets.txt','wb') as fid:
+            fid.write('%0.3f\n'%self.x0_deg)
+            fid.write('%0.3f\n'%self.y0_deg)
         
     def center(self):
         """Center target."""

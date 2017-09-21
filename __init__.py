@@ -155,6 +155,7 @@ for key,key_ms,func in key_triples:
 
 # note the time the loop starts:
 t0 = time.time()
+log_t0 = time.time()
 # a couple of booleans to keep track of state:
 printed = False
 help_on = False
@@ -180,6 +181,7 @@ while 1:
     t = time.time()
     mode_age = t-time_of_last_mode_change
     age = t-t0
+    log_age = t-log_t0
     
     if (age):
         other_fps = float(n_frames)/float(age)
@@ -197,6 +199,7 @@ while 1:
     if not printed and age>5.0:
         log(tar.msg_log_entry())
         printed = True
+        log_t0 = time.time()
         
     for event in pygame.event.get():
         t0 = time.time()
