@@ -6,7 +6,7 @@ These instructions assume that you are using the [Anaconda](https://www.anaconda
 
 #### To install and run:
 
-1. Create a virtual environment called **looky**: `conda create looky python=3.13`.
+1. Create a virtual environment called **looky**: `conda create -n looky python=3.13`.
 2. Activate the **looky** environment: `conda activate looky`.
 3. Install **pygame** using pip: `pip install pygame`.
 4. Install **watchdog** using pip (`pip install watchdog`) or conda (`conda install watchdog`).
