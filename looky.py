@@ -63,6 +63,8 @@ class ObserverHandler(FileSystemEventHandler):
                 assert os.path.exists(outfn)
             except AssertionError:
                 sys.exit('ObserverHandler failed to write .looky file.')
+            if cfg.auto_advance:
+                self.target.next()
             log('%s file found at %s, eccentricity written to %s'%(ext,filename,outfn))
 
                 
@@ -316,18 +318,19 @@ small_step = cfg.target_small_step*cfg.pixels_per_deg
 inset = DeadLeaves()
 inset_exists = False
 
-try:
-    path = cfg.data_monitoring_folder
-    event_handler = ObserverHandler(tar)
-    observer = Observer()
-    observer.schedule(event_handler, path, recursive=True)
-    observer.start()
-except AttributeError as ae:
-    print('data_monitoring_folder not set in config.py. Proceeding without data monitoring.')
-    pass
-except FileNotFoundError as fnfe:
-    print('data_monitoring_folder %s not found. Please edit config.py as required.'%cfg.data_monitoring_folder)
-    sys.exit()
+if cfg.data_monitoring:
+    try:
+        path = cfg.data_monitoring_folder
+        event_handler = ObserverHandler(tar)
+        observer = Observer()
+        observer.schedule(event_handler, path, recursive=True)
+        observer.start()
+    except AttributeError as ae:
+        print('data_monitoring_folder not set in config.py. Proceeding without data monitoring.')
+        pass
+    except FileNotFoundError as fnfe:
+        print('data_monitoring_folder %s not found. Please edit config.py as required.'%cfg.data_monitoring_folder)
+        sys.exit()
 
 
 def close_match(tup,tup_list,tolerance=0.01):

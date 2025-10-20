@@ -3,8 +3,10 @@ monitor_number = 0
 pixels_per_deg = 72
 background_color = (0, 0, 0)
 
+data_monitoring = True
 data_monitoring_folder = '/home/rjonnal/code/looky/testing'
 data_monitoring_extensions = ['.unp']
+auto_advance = True # automatically advance the script index when new data is detected
 
 target_color = (127, 127, 255)
 target_line_width = 5
