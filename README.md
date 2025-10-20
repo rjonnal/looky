@@ -10,4 +10,6 @@ To install:
 2. Activate the **looky** environment: `conda activate looky`.
 3. Install **pygame** using pip: `pip install pygame`.
 4. Install **watchdog** using pip (`pip install watchdog`) or conda (`conda install watchdog`).
-5. Clone this repo into your a folder that's in your PYTHONPATH. In CHOIR labs, this will typically be `/home/user/code` or `c:\code`. Move into the desired folder and issue `git clone https://
+5. Clone this repo into your a folder that's in your PYTHONPATH. In CHOIR labs, this will typically be `/home/user/code` or `c:\code`. Move into the desired folder and issue `git clone https://github.com/rjonnal/looky`.
+6. Edit `config.py` as necessary. In particular, set the value of `data_monitoring_folder` to a real folder in your filesystem where the acquired images will be written.
+

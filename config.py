@@ -1,6 +1,6 @@
 display_mode = (1280,720)
 monitor_number = 0
-pixels_per_deg = 120
+pixels_per_deg = 72
 background_color = (0, 0, 0)
 
 data_monitoring_folder = '/home/rjonnal/code/looky/testing'
@@ -12,13 +12,12 @@ target_radius = 1.0 #deg
 target_step = 0.5
 target_small_step = 0.125
 
-target_type = 'star' # 'star' or 'bullseye' for now
+target_type = 'bullseye' # 'star' or 'bullseye' for now
 
 colors = [(127,0,0),
           (0,127,0),
           (127,0,0),
           (255,0,127)]
-
 
 
 origin_filename = 'origin.txt'
@@ -51,8 +50,9 @@ deadleaves_gray_mean = 127
 # The full cycle frequency is half the update frequency.
 # In other words, if you want the full cycle to run at 7.5 Hz,
 # write 15 Hz here.
-deadleaves_frequency = 2 
+deadleaves_frequency = 6
 deadleaves_seed = 1234
 
 # seconds to wait after moving the target before writing its location tot he log
 logging_interval = 1
+

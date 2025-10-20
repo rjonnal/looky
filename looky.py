@@ -5,6 +5,11 @@ import sys,os,glob,math,random,logging,time
 from watchdog.observers import Observer
 from watchdog.events import LoggingEventHandler, FileSystemEventHandler
 
+try:
+    from location_script import location_script
+except ImportError:
+    location_script = [(0.0,0.0)]
+    
 pygame.init()
 pygame.font.init() 
 
@@ -68,7 +73,10 @@ class Target:
                               self.position_vector.y/cfg.pixels_per_deg)
     
     def __init__(self,step=None,small_step=None):
-        self.position_vector = pygame.Vector2(0.0,0.0)
+        self.location_index = 0
+        x,y = [k*cfg.pixels_per_deg for k in location_script[self.location_index]]
+        
+        self.position_vector = pygame.Vector2(x,y)
         if step is None:
             self.step = cfg.target_step*cfg.pixels_per_deg
         else:
@@ -81,10 +89,25 @@ class Target:
 
         self.age = 0.0
         self.logged = False
+
+    def next(self):
+        self.location_index = (self.location_index+1)%len(location_script)
+        x,y = [k*cfg.pixels_per_deg for k in location_script[self.location_index]]
+        self.move(x,y,absolute=True)
         
-    def move(self,dx,dy):
-        self.position_vector.x+=dx
-        self.position_vector.y+=dy
+    def previous(self):
+        self.location_index = (self.location_index-1)%len(location_script)
+        x,y = [k*cfg.pixels_per_deg for k in location_script[self.location_index]]
+        self.move(x,y,absolute=True)
+        
+        
+    def move(self,dx,dy,absolute=False):
+        if absolute:
+            self.position_vector.x = dx
+            self.position_vector.y = dy
+        else:
+            self.position_vector.x+=dx
+            self.position_vector.y+=dy
         self.logged = False
         self.age = 0.0
 
@@ -307,6 +330,15 @@ except FileNotFoundError as fnfe:
     sys.exit()
 
 
+def close_match(tup,tup_list,tolerance=0.01):
+    out = False
+    x0,y0 = tup
+    for idx,(x,y) in enumerate(tup_list):
+        d = math.sqrt((y0-y)**2+(x0-x)**2)
+        if d<tolerance:
+            out = idx
+            break
+    return out
 
 
 
@@ -346,6 +378,19 @@ while running:
                     origin.down(fine_mode)
                 else:
                     tar.down(fine_mode)
+
+
+            if event.key == pygame.K_PAGEUP:
+                if origin_mode:
+                    pass
+                else:
+                    tar.previous()
+
+            if event.key == pygame.K_PAGEDOWN:
+                if origin_mode:
+                    pass
+                else:
+                    tar.next()
 
             if event.key == pygame.K_i:
                 inset_exists = not inset_exists
@@ -391,8 +436,18 @@ while running:
 
     x_deg = tar.position_vector.x/cfg.pixels_per_deg
     y_deg = tar.position_vector.y/cfg.pixels_per_deg
-    message = 'x = %0.3f, y = %0.3f'%(x_deg,y_deg)
-
+    try:
+        lidx = close_match((x_deg,y_deg),location_script)
+    except Exception as e:
+        print(e)
+        lidx = -1
+    message = 'x = %0.3f, y = %0.3f (loc %d)'%(x_deg,y_deg,lidx)
+    if origin_mode:
+        ox_px = origin.position_vector.x
+        oy_px = origin.position_vector.y
+        message = message + ' origin x = %d, y = %d'%(ox_px,oy_px)
+    
+    
     text_surface = my_font.render(message, False, cfg.text_color)
     screen.blit(text_surface,(0,0))
     
