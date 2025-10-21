@@ -1,5 +1,5 @@
-display_mode = (1280,720)
-monitor_number = 0
+display_mode = (1920,1080)
+monitor_number = 1
 pixels_per_deg = 72
 background_color = (0, 0, 0)
 
@@ -38,14 +38,14 @@ origin_small_step_px = 1
 
 inset_background_color = (127, 127, 127)
 
-inset_width_deg = 7.0
-inset_height_deg = 3.0
+inset_width_deg = 18.0
+inset_height_deg = 6.0
 inset_x_deg = 0.0
-inset_y_deg = 0.0
+inset_y_deg = 3.0
 
-deadleaves_n_ellipses = int(inset_width_deg*inset_height_deg*100)
-deadleaves_rad_mean_deg = 0.1
-deadleaves_rad_std_deg = 0.07
+deadleaves_rad_mean_deg = 0.25
+deadleaves_rad_std_deg = 0.2
+deadleaves_n_ellipses = int(inset_width_deg*inset_height_deg/deadleaves_rad_mean_deg**2)
 deadleaves_alpha = 0.5
 deadleaves_gray_range = 255
 deadleaves_gray_mean = 127

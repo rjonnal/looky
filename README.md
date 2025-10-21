@@ -44,3 +44,22 @@ These instructions assume that you are using the [Anaconda](https://www.anaconda
 
 <kbd>Escape</kbd> or <kbd>q</kbd>: Quit.
 
+#### Config file `config.py` settings
+
+##### Dead leaves configuration
+
+```deadleaves_rad_mean_deg = 0.25```
+
+```deadleaves_rad_std_deg = 0.2```
+
+```deadleaves_n_ellipses = int(inset_width_deg*inset_height_deg/deadleaves_rad_mean_deg**2)```
+
+```deadleaves_alpha = 0.5```
+
+```deadleaves_gray_range = 255```
+
+```deadleaves_gray_mean = 127```
+
+```deadleaves_frequency = 6```
+
+```deadleaves_seed = 1234```
