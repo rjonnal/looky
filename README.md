@@ -44,6 +44,8 @@ These instructions assume that you are using the [Anaconda](https://www.anaconda
 
 <kbd>Escape</kbd> or <kbd>q</kbd>: Quit.
 
+<kbd>t</kbd>: Write a test file to `data_monitoring_folder` to see if data monitoring and auto-advancing are functioning correctly.
+
 #### Config file `config.py` settings
 
 ##### Data monitorning and auto-advance

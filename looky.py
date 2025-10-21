@@ -334,7 +334,7 @@ if cfg.data_monitoring:
 
 
 def close_match(tup,tup_list,tolerance=0.01):
-    out = False
+    out = -1
     x0,y0 = tup
     for idx,(x,y) in enumerate(tup_list):
         d = math.sqrt((y0-y)**2+(x0-x)**2)
@@ -343,6 +343,11 @@ def close_match(tup,tup_list,tolerance=0.01):
             break
     return out
 
+def write_test_file():
+    basefn = '%d%s'%(random.randint(0,int(1e15)),cfg.data_monitoring_extensions[0])
+    outfn = os.path.join(cfg.data_monitoring_folder,basefn)
+    with open(outfn,'w') as fid:
+        fid.write('0')
 
 while running:
     # poll for events
@@ -403,6 +408,9 @@ while running:
             if event.key in [pygame.K_ESCAPE,pygame.K_q]:
                 running = False
 
+            if event.key == pygame.K_t:
+                write_test_file()
+
             
     # fill the screen with a color to wipe away anything from last frame
     screen.fill(bgc)
@@ -445,7 +453,11 @@ while running:
     except Exception as e:
         print(e)
         lidx = -1
-    message = 'x = %0.3f, y = %0.3f (loc %d)'%(x_deg,y_deg,lidx)
+    if lidx>-1:
+        message = 'x = %0.3f, y = %0.3f (loc %d)'%(x_deg,y_deg,lidx)
+    else:
+        message = 'x = %0.3f, y = %0.3f (off script)'%(x_deg,y_deg)
+        
     if origin_mode:
         ox_px = origin.position_vector.x
         oy_px = origin.position_vector.y
