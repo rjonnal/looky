@@ -18,7 +18,21 @@ These instructions assume that you are using the [Anaconda](https://www.anaconda
 
 
 <kbd>Up</kbd>: Move target up.
-<kbd>Alt</kbd>+<kbd>Up</kbd>: Move origin up.
+
+<kbd>Down</kbd>: Move target down.
+
+<kbd>Left</kbd>: Move target left.
+
+<kbd>Right</kbd>: Move target right.
+
+<kbd>Shift</kbd>+<kbd>Up</kbd>: Move target up.
+
+<kbd>Shift</kbd>+<kbd>Down</kbd>: Move target down.
+
+<kbd>Shift</kbd>+<kbd>Left</kbd>: Move target left.
+
+<kbd>Shift</kbd>+<kbd>Right</kbd>: Move target right.
+
 
 Arrows: move target in large increments; with **Shift** key, move in small increments; increments are set in config.py.
 
