@@ -48,18 +48,23 @@ These instructions assume that you are using the [Anaconda](https://www.anaconda
 
 ##### Dead leaves configuration
 
+The average ellipse radius, major or minor axis:
 ```deadleaves_rad_mean_deg = 0.25```
 
+The standard deviation of ellipse radius:
 ```deadleaves_rad_std_deg = 0.2```
 
+The number of ellipses; this is effectively calculated from the inset size and the average size of the leaves:
 ```deadleaves_n_ellipses = int(inset_width_deg*inset_height_deg/deadleaves_rad_mean_deg**2)```
 
-```deadleaves_alpha = 0.5```
-
+The full range of contrast for the dead leaves. 255 means that the maximum inversion amplitude will be 255 gray levels, i.e. oscillating between 0 and 255:
 ```deadleaves_gray_range = 255```
 
+The mean gray level for the leaves:
 ```deadleaves_gray_mean = 127```
 
+The flip frequency for the contrast inversions. This is twice the full-cycle frequency, but the full-cycle frequency isn't as important as the flip frequency. The flip frequency is the carrier frequency for downstream analysis.
 ```deadleaves_frequency = 6```
 
+A random seed for the deadleaves images.
 ```deadleaves_seed = 1234```
