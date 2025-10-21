@@ -25,13 +25,29 @@ These instructions assume that you are using the [Anaconda](https://www.anaconda
 
 <kbd>Right</kbd>: Move target right.
 
-<kbd>Shift</kbd>+<kbd>Up</kbd>: Move target up.
+<kbd>Shift</kbd>+<kbd>Up</kbd>: Move target up (small step).
 
-<kbd>Shift</kbd>+<kbd>Down</kbd>: Move target down.
+<kbd>Shift</kbd>+<kbd>Down</kbd>: Move target down (small step).
 
-<kbd>Shift</kbd>+<kbd>Left</kbd>: Move target left.
+<kbd>Shift</kbd>+<kbd>Left</kbd>: Move target left (small step).
 
-<kbd>Shift</kbd>+<kbd>Right</kbd>: Move target right.
+<kbd>Shift</kbd>+<kbd>Right</kbd>: Move target right (small step).
+
+<kbd>Alt</kbd>+<kbd>Up</kbd>: Move origin up.
+
+<kbd>Alt</kbd>+<kbd>Down</kbd>: Move origin down.
+
+<kbd>Alt</kbd>+<kbd>Left</kbd>: Move origin left.
+
+<kbd>Alt</kbd>+<kbd>Right</kbd>: Move origin right.
+
+<kbd>Alt</kbd>+<kbd>Shift</kbd>+<kbd>Up</kbd>: Move origin up (small step).
+
+<kbd>Alt</kbd>+<kbd>Shift</kbd>+<kbd>Down</kbd>: Move origin down (small step).
+
+<kbd>Alt</kbd>+<kbd>Shift</kbd>+<kbd>Left</kbd>: Move origin left (small step).
+
+<kbd>Alt</kbd>+<kbd>Shift</kbd>+<kbd>Right</kbd>: Move origin right (small step).
 
 
 Arrows: move target in large increments; with **Shift** key, move in small increments; increments are set in config.py.
