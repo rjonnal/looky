@@ -14,7 +14,7 @@ These instructions assume that you are using the [Anaconda](https://www.anaconda
 6. Edit `config.py` as necessary. In particular, set the value of `data_monitoring_folder` to a real folder in your filesystem where the acquired images will be written.
 7. Run with: `python looky.py`
 
-#### Keyboard shortcuts
+### Keyboard shortcuts
 
 <kbd>Up</kbd>: Move target up.
 <kbd>Down</kbd>: Move target down.
@@ -46,9 +46,9 @@ These instructions assume that you are using the [Anaconda](https://www.anaconda
 
 <kbd>t</kbd>: Write a test file to `data_monitoring_folder` to see if data monitoring and auto-advancing are functioning correctly.
 
-#### Config file `config.py` settings
+### Config file `config.py` settings
 
-##### Data monitorning and auto-advance
+#### Data monitorning and auto-advance
 
 Some parameters to set up data monitoring and auto-advance:
 
@@ -64,7 +64,7 @@ If `data_monitoring` is `True`, **looky** will monitor the folder `data_monitori
 If `auto_advance` is `True`, then **looky** will automatically go to the next location in the location script whenever new data is written to the `data_monitoring_folder` matching one of the extensions in `data_monitoring_extensions`.
 
 
-##### Dead leaves configuration
+#### Dead leaves configuration
 
 Some basic parameters for setting up the inset screen:
 
