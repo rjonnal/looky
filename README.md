@@ -50,15 +50,18 @@ These instructions assume that you are using the [Anaconda](https://www.anaconda
 
 Some basic parameters for setting up the inset screen:
 
-```inset_background_color = (127, 127, 127)
+```
+inset_background_color = (127, 127, 127)
 inset_width_deg = 18.0
 inset_height_deg = 6.0
 inset_x_deg = 0.0
-inset_y_deg = 3.0```
-
+inset_y_deg = 3.0
+```
 
 The average ellipse radius, major or minor axis:
-```deadleaves_rad_mean_deg = 0.25```
+```
+deadleaves_rad_mean_deg = 0.25
+```
 
 The standard deviation of ellipse radius:
 ```deadleaves_rad_std_deg = 0.2```
