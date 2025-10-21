@@ -16,6 +16,10 @@ These instructions assume that you are using the [Anaconda](https://www.anaconda
 
 #### Keyboard shortcuts
 
+
+<kbd>Up</kbd>: Move target up.
+<kbd>Alt</kbd>+<kbd>Up</kbd>: Move origin up.
+
 Arrows: move target in large increments; with **Shift** key, move in small increments; increments are set in config.py.
 
 Page-up and Page-down: move through location script; see `location_script.py`.

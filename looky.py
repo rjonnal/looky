@@ -344,11 +344,11 @@ def close_match(tup,tup_list,tolerance=0.01):
     return out
 
 
-
 while running:
     # poll for events
     # pygame.QUIT event means the user clicked X to close your window
     for event in pygame.event.get():
+        
         if event.type == pygame.QUIT:
             running = False
 
@@ -358,6 +358,7 @@ while running:
         fine_mode = mods & pygame.KMOD_SHIFT
         
         if event.type == pygame.KEYDOWN:
+
             if event.key == pygame.K_LEFT:
                 if origin_mode:
                     origin.left(fine_mode)
