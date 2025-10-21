@@ -16,7 +16,6 @@ These instructions assume that you are using the [Anaconda](https://www.anaconda
 
 #### Keyboard shortcuts
 
-
 <kbd>Up</kbd>: Move target up.
 
 <kbd>Down</kbd>: Move target down.
@@ -49,9 +48,11 @@ These instructions assume that you are using the [Anaconda](https://www.anaconda
 
 <kbd>Alt</kbd>+<kbd>Shift</kbd>+<kbd>Right</kbd>: Move origin right (small step).
 
+<kbd>i</kbd>: Toggle inset image/video, e.g. dead leaves animation.
 
-Arrows: move target in large increments; with **Shift** key, move in small increments; increments are set in config.py.
+<kbd>PageDown</kbd>: Next location in location script.
 
-Page-up and Page-down: move through location script; see `location_script.py`.
+<kbd>PageUp</kbd>: Previous location in location script.
 
-i: turn on and off inset image, in this case a dead leaves animation.
+<kbd>Escape</kbd> or <kbd>q</kbd>: Quit.
+
