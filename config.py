@@ -15,6 +15,7 @@ target_step = 0.5
 target_small_step = 0.125
 
 target_type = 'bullseye' # 'star' or 'bullseye' for now
+inset_type = 'checkerboard' # 'grating' or 'deadleaves' or 'checkerboard'
 
 colors = [(127,0,0),
           (0,127,0),
@@ -54,6 +55,17 @@ deadleaves_gray_mean = 127
 # write 15 Hz here.
 deadleaves_frequency = 6
 deadleaves_seed = 1234
+
+grating_frequency = 30
+grating_n_cycles = 18
+grating_cycles_per_second = 5
+grating_orientation = 'vertical'
+
+checkerboard_frequency = 5
+checkerboard_n_cols = 18
+checkerboard_n_rows = 6
+checkerboard_bright = (255,255,255)
+checkerboard_dark = (0,0,0)
 
 # seconds to wait after moving the target before writing its location tot he log
 logging_interval = 1

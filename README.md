@@ -38,6 +38,8 @@ These instructions assume that you are using the [Anaconda](https://www.anaconda
 
 <kbd>i</kbd>: Toggle inset image/video, e.g. dead leaves animation.
 
+<kbd>Ctrl</kbd>+<kbd>i</kbd>: Cycle through inset possibilities.
+
 <kbd>PageDown</kbd>: Next location in location script.
 
 <kbd>PageUp</kbd>: Previous location in location script.

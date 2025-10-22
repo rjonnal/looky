@@ -4,6 +4,8 @@ import config as cfg
 import sys,os,glob,math,random,logging,time
 from watchdog.observers import Observer
 from watchdog.events import LoggingEventHandler, FileSystemEventHandler
+import numpy as np
+from matplotlib import pyplot as plt
 
 try:
     from location_script import location_script
@@ -219,7 +221,7 @@ class Bullseye(Target):
             pygame.draw.circle(screen, color, pygame.Vector2(x0,y0), radius)
 
 class Inset:
-
+    visible = False
     def __init__(self, width, height, x, y, update_frequency=5.0):
         self.width = int(round(width))
         self.height = int(round(height))
@@ -231,7 +233,11 @@ class Inset:
         self.surface.fill(cfg.inset_background_color)
         self.clock = pygame.time.Clock()
         self.last_update_time = 0.0
+        #self.visible = False
 
+    def toggle(self):
+        self.visible = not self.visible
+        
     def draw(self, screen, origin = None):
         if origin is None:
             xoff = 0.0
@@ -302,6 +308,79 @@ class DeadLeaves(Inset):
     def update(self):
         self.surface = self.surfaces[self.counter]
         self.counter = (self.counter+1)%2
+
+class CheckerBoard(Inset):
+
+    def __init__(self):
+        xoff = origin.position_vector.x
+        yoff = origin.position_vector.y
+        
+        super().__init__(cfg.inset_width_deg*cfg.pixels_per_deg,
+                         cfg.inset_height_deg*cfg.pixels_per_deg,
+                         cfg.inset_x_deg*cfg.pixels_per_deg,
+                         cfg.inset_y_deg*cfg.pixels_per_deg,
+                         cfg.checkerboard_frequency)
+        self.s1 = pygame.Surface((self.width,self.height))
+        self.s2 = pygame.Surface((self.width,self.height))
+        self.s1.fill((0,0,0))
+        self.s2.fill((0,0,0))
+
+        self.counter = 0
+        
+        rheight = self.height/cfg.checkerboard_n_rows
+        rwidth = self.width/cfg.checkerboard_n_cols
+
+        ry = 0
+
+        colors = [cfg.checkerboard_bright,cfg.checkerboard_dark]
+        for row in range(cfg.checkerboard_n_rows):
+            rx = 0
+            for col in range(cfg.checkerboard_n_cols):
+                rect = pygame.Rect(rx,ry,rwidth,rheight)
+                pygame.draw.rect(self.s1,colors[(row+col)%2],rect)
+                pygame.draw.rect(self.s2,colors[(row+col+1)%2],rect)
+                rx = rx + rwidth
+            ry = ry + rheight
+                
+        pygame.image.save(self.s1,os.path.join(cfg.data_folder,'checkerboard_1.png'))
+        pygame.image.save(self.s2,os.path.join(cfg.data_folder,'checkerboard_2.png'))
+        self.surfaces = [self.s1,self.s2]
+        
+    def update(self):
+        self.surface = self.surfaces[self.counter]
+        self.counter = (self.counter+1)%2
+
+        
+
+class Grating(Inset):
+
+    def __init__(self):
+        xoff = origin.position_vector.x
+        yoff = origin.position_vector.y
+        
+        super().__init__(cfg.inset_width_deg*cfg.pixels_per_deg,
+                         cfg.inset_height_deg*cfg.pixels_per_deg,
+                         cfg.inset_x_deg*cfg.pixels_per_deg,
+                         cfg.inset_y_deg*cfg.pixels_per_deg,
+                         cfg.grating_frequency)
+        sc = 3
+        self.grating = np.zeros((self.width,self.height),dtype=np.uint8)
+        XX,YY = np.meshgrid(np.arange(self.height),np.arange(self.width))
+
+        YY = YY/self.width*2*np.pi*cfg.grating_n_cycles
+        
+        self.grating = np.round(127.5*(1+np.sin(YY))).astype(np.uint8)
+        self.grating3 = np.transpose(np.array([self.grating]*3),(1,2,0))
+        self.surface = pygame.surfarray.make_surface(self.grating3)
+        px_per_cycle = self.width/cfg.grating_n_cycles
+        
+        self.dx = cfg.grating_cycles_per_second*px_per_cycle/cfg.grating_frequency
+        
+    def update(self):
+        self.grating3 = np.roll(self.grating3,self.dx,axis=0)
+        self.surface = pygame.surfarray.make_surface(self.grating3)
+        
+
         
 if cfg.target_type=='bullseye':
     tar = Bullseye()
@@ -315,8 +394,15 @@ origin = Origin()
 step = cfg.target_step*cfg.pixels_per_deg
 small_step = cfg.target_small_step*cfg.pixels_per_deg
 
-inset = DeadLeaves()
-inset_exists = False
+inset_dict = {'deadleaves':DeadLeaves,
+              'grating':Grating,
+              'checkerboard':CheckerBoard}
+
+inset = inset_dict[cfg.inset_type]()
+inset_keys = list(inset_dict.keys())
+n_insets = len(inset_keys)
+inset_index = inset_keys.index(cfg.inset_type)
+
 
 if cfg.data_monitoring:
     try:
@@ -402,7 +488,13 @@ while running:
                     tar.next()
 
             if event.key == pygame.K_i:
-                inset_exists = not inset_exists
+                if mods & pygame.KMOD_CTRL:
+                    inset_index = (inset_index+1)%n_insets
+                    visibility = inset.visible
+                    inset = inset_dict[inset_keys[inset_index]]()
+                    inset.visible = visibility
+                else:
+                    inset.toggle()
                     
                 
             if event.key in [pygame.K_ESCAPE,pygame.K_q]:
@@ -415,7 +507,7 @@ while running:
     # fill the screen with a color to wipe away anything from last frame
     screen.fill(bgc)
 
-    if inset_exists:
+    if inset.visible:
         inset.draw(screen,origin)
         
     if origin_mode:
@@ -423,25 +515,6 @@ while running:
     else:
         tar.draw(screen,origin)
 
-    # keys = pygame.key.get_pressed()
-
-    # if keys[pygame.K_w]:
-    #     tar.move(0,step)
-    # if keys[pygame.K_s]:
-    #     tar.move(0,-step)
-    # if keys[pygame.K_a]:
-    #     tar.move(-step,0)
-    # if keys[pygame.K_d]:
-    #     tar.move(step,0)
-
-    # if keys[pygame.K_ESCAPE] or keys[pygame.K_q]:
-    #     running = False
-
-        
-
-    # limits FPS to 60
-    # dt is delta time in seconds since last frame, used for framerate-
-    # independent physics.
     dt = clock.tick() / 1000
 
     tar.age = tar.age + dt
