@@ -9,10 +9,11 @@ from matplotlib import pyplot as plt
 
 eyes = ['RE','LE']
 
-eye = input('Eye: RE or LE? (%s) '%cfg.default_eye)
+eye = input('Eye: RE or LE? (%s) '%cfg.default_eye).upper()
 try:
     assert eye in eyes
 except AssertionError as ae:
+    print('%s is not in %s, setting to default %s'%(eye,eyes,cfg.default_eye))
     eye = cfg.default_eye
 
 eye_index = eyes.index(eye)
