@@ -1,5 +1,5 @@
 display_mode = (1920,1080)
-monitor_number = 1
+monitor_number = 0
 pixels_per_deg = 72
 background_color = (0, 0, 0)
 
@@ -8,13 +8,13 @@ data_monitoring_folder = '/home/rjonnal/code/looky/testing'
 data_monitoring_extensions = ['.unp']
 auto_advance = True # automatically advance the script index when new data is detected
 
-target_color = (127, 127, 255)
+target_color = (31, 31, 31)
 target_line_width = 5
 target_radius = 1.0 #deg
 target_step = 0.5
 target_small_step = 0.125
 
-target_type = 'bullseye' # 'star' or 'bullseye' for now
+target_type = 'ABC' # 'star' or 'bullseye' or 'ABC' for now
 inset_type = 'checkerboard' # 'grating' or 'deadleaves' or 'checkerboard'
 
 colors = [(127,0,0),
@@ -27,9 +27,9 @@ origin_filename = 'origin.txt'
 log_folder = 'logs'
 data_folder = 'data'
 
-text_color = (255,255,255)
+text_color = (127,191,127)
 text_font_size = 32
-text_font = 'ubuntu'
+text_font = 'freemono'
 
 origin_color = (255,0,0)
 origin_size_px = 50

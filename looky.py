@@ -220,6 +220,43 @@ class Bullseye(Target):
         for radius,color in zip(self.radii,self.ring_colors):
             pygame.draw.circle(screen, color, pygame.Vector2(x0,y0), radius)
 
+
+class ABC(Target):
+
+    def __init__(self):
+        super().__init__()
+        self.radius = cfg.target_radius*cfg.pixels_per_deg
+        self.color = cfg.target_color
+        self.background_color = cfg.background_color
+        
+    def draw(self, screen, origin=None):
+        if origin is None:
+            xoff = 0.0
+            yoff = 0.0
+        else:
+            xoff = origin.position_vector.x
+            yoff = origin.position_vector.y
+
+        x = self.position_vector.x+xoff
+        y = self.position_vector.y+yoff
+        
+        pygame.draw.circle(screen, self.color, pygame.Vector2(x,y),self.radius)
+        bar_width = self.radius/4.0
+        b1x = x-self.radius
+        b1y = y-bar_width/2.0
+        b1w = self.radius*2
+        b1h = bar_width
+        b2x = x-bar_width/2.0
+        b2y = y-self.radius
+        b2w = bar_width
+        b2h = self.radius*2
+        r1 = pygame.Rect(b1x,b1y,b1w,b1h)
+        r2 = pygame.Rect(b2x,b2y,b2w,b2h)
+        pygame.draw.rect(screen,self.background_color,r1)
+        pygame.draw.rect(screen,self.background_color,r2)
+        pygame.draw.circle(screen,self.color,pygame.Vector2(x,y),bar_width/2.0)
+
+            
 class Inset:
     visible = False
     def __init__(self, width, height, x, y, update_frequency=5.0):
@@ -386,6 +423,8 @@ if cfg.target_type=='bullseye':
     tar = Bullseye()
 elif cfg.target_type=='star':
     tar = Star()
+elif cfg.target_type=='ABC':
+    tar = ABC()
 else:
     sys.exit('%s is an invalid target_type in config.py')
     
