@@ -1,7 +1,9 @@
-display_mode = (1920,1080)
+display_mode = (1280,720)
 monitor_number = 0
 pixels_per_deg = 72
 background_color = (0, 0, 0)
+
+default_eye = 'RE'
 
 data_monitoring = True
 data_monitoring_folder = '/home/rjonnal/code/looky/testing'
@@ -57,7 +59,7 @@ deadleaves_frequency = 6
 deadleaves_seed = 1234
 
 grating_frequency = 30
-grating_n_cycles = 18
+grating_interval_deg = 1
 grating_cycles_per_second = 5
 grating_orientation = 'vertical'
 

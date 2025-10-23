@@ -7,6 +7,16 @@ from watchdog.events import LoggingEventHandler, FileSystemEventHandler
 import numpy as np
 from matplotlib import pyplot as plt
 
+eyes = ['RE','LE']
+
+eye = input('Eye: RE or LE? (%s) '%cfg.default_eye)
+try:
+    assert eye in eyes
+except AssertionError as ae:
+    eye = cfg.default_eye
+
+eye_index = eyes.index(eye)
+
 try:
     from location_script import location_script
 except ImportError:
@@ -58,7 +68,7 @@ class ObserverHandler(FileSystemEventHandler):
         ext = os.path.splitext(filename)[-1]
         if ext.lower() in cfg.data_monitoring_extensions:
             outfn = filename.replace(ext,'')+'.looky'
-            outstr = str(self.target)
+            outstr = '%s: %s'%(eye,self.target.ecc())
             with open(outfn,'w') as fid:
                 fid.write(outstr)
             try:
@@ -68,7 +78,7 @@ class ObserverHandler(FileSystemEventHandler):
             if cfg.auto_advance:
                 self.target.next()
             log('%s file found at %s, eccentricity written to %s'%(ext,filename,outfn))
-
+            log('Auto-advance to %s'%self.target.ecc())
                 
 class Target:
 
@@ -138,6 +148,31 @@ class Target:
             self.move(0,self.small_step)
         else:
             self.move(0,self.step)
+
+    def ecc(self):
+        x = self.position_vector.x/cfg.pixels_per_deg
+        y = self.position_vector.y/cfg.pixels_per_deg
+        if eye=='RE':
+            if x>0:
+                h = 'T'
+            elif x<0:
+                h = 'N'
+            else:
+                h = 'C'
+        else:
+            if x>0:
+                h = 'N'
+            elif x<0:
+                h = 'T'
+            else:
+                h = 'C'
+        if y>0:
+            v = 'I'
+        elif y<0:
+            v = 'S'
+        else:
+            v = 'C'
+        return '%0.3f%s, %0.3f%s'%(x,h,y,v)
 
 
 class Origin(Target):
@@ -400,21 +435,40 @@ class Grating(Inset):
                          cfg.inset_x_deg*cfg.pixels_per_deg,
                          cfg.inset_y_deg*cfg.pixels_per_deg,
                          cfg.grating_frequency)
+
+        self.orientation = cfg.grating_orientation
         sc = 3
         self.grating = np.zeros((self.width,self.height),dtype=np.uint8)
-        XX,YY = np.meshgrid(np.arange(self.height),np.arange(self.width))
 
-        YY = YY/self.width*2*np.pi*cfg.grating_n_cycles
+        if self.orientation=='vertical':
+            n_cycles = cfg.inset_width_deg/cfg.grating_interval_deg
+        else:
+            n_cycles = cfg.inset_height_deg/cfg.grating_interval_deg
         
-        self.grating = np.round(127.5*(1+np.sin(YY))).astype(np.uint8)
+        XX,YY = np.meshgrid(np.arange(self.height),np.arange(self.width))
+        YY = YY/self.width*2*np.pi*n_cycles
+        XX = XX/self.height*2*np.pi*n_cycles
+        
+        if self.orientation=='vertical':
+            basis = YY
+            npix = self.width
+        else:
+            basis = XX
+            npix = self.height
+
+        self.grating = np.round(127.5*(1+np.sin(basis))).astype(np.uint8)
         self.grating3 = np.transpose(np.array([self.grating]*3),(1,2,0))
         self.surface = pygame.surfarray.make_surface(self.grating3)
-        px_per_cycle = self.width/cfg.grating_n_cycles
         
-        self.dx = cfg.grating_cycles_per_second*px_per_cycle/cfg.grating_frequency
+        px_per_cycle = npix/n_cycles
+        self.nroll = cfg.grating_cycles_per_second*px_per_cycle/cfg.grating_frequency
         
     def update(self):
-        self.grating3 = np.roll(self.grating3,self.dx,axis=0)
+        if self.orientation=='vertical':
+            self.grating3 = np.roll(self.grating3,self.nroll,axis=0)
+        else:
+            self.grating3 = np.roll(self.grating3,self.nroll,axis=1)
+            
         self.surface = pygame.surfarray.make_surface(self.grating3)
         
 
@@ -542,6 +596,10 @@ while running:
             if event.key == pygame.K_t:
                 write_test_file()
 
+            if event.key == pygame.K_SPACE:
+                eye_index = (eye_index + 1)%2
+                eye = eyes[eye_index]
+
             
     # fill the screen with a color to wipe away anything from last frame
     screen.fill(bgc)
@@ -565,16 +623,16 @@ while running:
     except Exception as e:
         print(e)
         lidx = -1
+        
     if lidx>-1:
-        message = 'x = %0.3f, y = %0.3f (loc %d)'%(x_deg,y_deg,lidx)
+        message = '%s: %s (loc %d)'%(eye,tar.ecc(),lidx)
     else:
-        message = 'x = %0.3f, y = %0.3f (off script)'%(x_deg,y_deg)
+        message = '%s: %s (off script)'%(eye,tar.ecc())
         
     if origin_mode:
         ox_px = origin.position_vector.x
         oy_px = origin.position_vector.y
         message = message + ' origin x = %d, y = %d'%(ox_px,oy_px)
-    
     
     text_surface = my_font.render(message, False, cfg.text_color)
     screen.blit(text_surface,(0,0))
