@@ -38,7 +38,10 @@ These instructions assume that you are using the [Anaconda](https://www.anaconda
 
 <kbd>i</kbd>: Toggle inset image/video, e.g. dead leaves animation.
 
-<kbd>Ctrl</kbd>+<kbd>i</kbd>: Cycle through inset possibilities.
+<kbd>Ctrl</kbd>+<kbd>i</kbd>: Cycle through inset options.
+
+<kbd>Ctrl</kbd>+<kbd>t</kbd>: Cycle through target options.
+
 
 <kbd>PageDown</kbd>: Next location in location script.
 
@@ -46,7 +49,7 @@ These instructions assume that you are using the [Anaconda](https://www.anaconda
 
 <kbd>Escape</kbd> or <kbd>q</kbd>: Quit.
 
-<kbd>t</kbd>: Write a test file to `data_monitoring_folder` to see if data monitoring and auto-advancing are functioning correctly.
+<kbd>w</kbd>: Write a test file to `data_monitoring_folder` to see if data monitoring and auto-advancing are functioning correctly.
 
 ### Config file `config.py` settings
 

@@ -9,7 +9,14 @@ from matplotlib import pyplot as plt
 
 eyes = ['RE','LE']
 
-eye = input('Eye: RE or LE? (%s) '%cfg.default_eye).upper()
+if cfg.prompt_for_eye:
+    eye = input('Eye: RE or LE? (%s) '%cfg.default_eye).upper()
+else:
+    eye = cfg.default_eye
+
+if eye=='':
+    eye = cfg.default_eye
+    
 try:
     assert eye in eyes
 except AssertionError as ae:
@@ -82,14 +89,14 @@ class ObserverHandler(FileSystemEventHandler):
             log('Auto-advance to %s'%self.target.ecc())
                 
 class Target:
-
     def __str__(self):
         return '%0.2f,%0.2f'%(self.position_vector.x/cfg.pixels_per_deg,
                               self.position_vector.y/cfg.pixels_per_deg)
     
     def __init__(self,step=None,small_step=None):
         self.location_index = 0
-        x,y = [k*cfg.pixels_per_deg for k in location_script[self.location_index]]
+        #x,y = [k*cfg.pixels_per_deg for k in location_script[self.location_index]]
+        x,y = 0.0,0.0
         
         self.position_vector = pygame.Vector2(x,y)
         if step is None:
@@ -104,6 +111,9 @@ class Target:
 
         self.age = 0.0
         self.logged = False
+        self.radius = cfg.target_radius*cfg.pixels_per_deg
+        self.foreground_color = cfg.foreground_color
+        self.background_color = cfg.background_color
 
     def next(self):
         self.location_index = (self.location_index+1)%len(location_script)
@@ -173,8 +183,26 @@ class Target:
             v = 'S'
         else:
             v = 'C'
-        return '%0.3f%s, %0.3f%s'%(x,h,y,v)
+        return '%0.3f%s, %0.3f%s'%(abs(x),h,abs(y),v)
 
+    def brightenfg(self):
+        newcolor = [np.clip(c+cfg.color_increment,0,255).astype(int) for c in self.foreground_color]
+        self.foreground_color = tuple(newcolor)
+
+    def darkenfg(self):
+        newcolor = [np.clip(c-cfg.color_increment,0,255).astype(int) for c in self.foreground_color]
+        self.foreground_color = tuple(newcolor)
+
+    def brightenbg(self):
+        newcolor = [np.clip(c+cfg.color_increment,0,255).astype(int) for c in self.background_color]
+        self.background_color = tuple(newcolor)
+
+    def darkenbg(self):
+        newcolor = [np.clip(c-cfg.color_increment,0,255).astype(int) for c in self.background_color]
+        self.background_color = tuple(newcolor)
+
+
+    
 
 class Origin(Target):
     
@@ -189,7 +217,7 @@ class Origin(Target):
         self.position_vector = pygame.Vector2(origin_x,origin_y)
             
         self.size = cfg.origin_size_px
-        self.color = cfg.origin_color
+        self.foreground_color = cfg.origin_color
         self.linewidth = cfg.origin_line_width
 
     def move(self,dx,dy):
@@ -200,17 +228,15 @@ class Origin(Target):
             fid.write('%0.1f,%01.f'%(x,y))
         
     def draw(self,screen):
-        pygame.draw.line(screen,self.color,pygame.Vector2(self.position_vector.x-self.size,self.position_vector.y),pygame.Vector2(self.position_vector.x+self.size,self.position_vector.y),self.linewidth)
-        pygame.draw.line(screen,self.color,pygame.Vector2(self.position_vector.x,self.position_vector.y-self.size),pygame.Vector2(self.position_vector.x,self.position_vector.y+self.size),self.linewidth)
+        pygame.draw.line(screen,self.foreground_color,pygame.Vector2(self.position_vector.x-self.size,self.position_vector.y),pygame.Vector2(self.position_vector.x+self.size,self.position_vector.y),self.linewidth)
+        pygame.draw.line(screen,self.foreground_color,pygame.Vector2(self.position_vector.x,self.position_vector.y-self.size),pygame.Vector2(self.position_vector.x,self.position_vector.y+self.size),self.linewidth)
                          
 class Star(Target):
 
     def __init__(self):
         super().__init__()
-        self.radius = cfg.target_radius*cfg.pixels_per_deg
         self.thetas = [k*math.pi/4.0 for k in range(8)]
         self.linewidth = cfg.target_line_width
-        self.color = cfg.target_color
 
     def draw(self, screen, origin=None):
         if origin is None:
@@ -227,15 +253,13 @@ class Star(Target):
             x1 = math.sin(theta)*self.radius+x0
             y1 = math.cos(theta)*self.radius+y0
             
-            pygame.draw.line(screen, self.color, pygame.Vector2(x0,y0), pygame.Vector2(x1,y1), self.linewidth)
+            pygame.draw.line(screen, self.foreground_color, pygame.Vector2(x0,y0), pygame.Vector2(x1,y1), self.linewidth)
 
 class Bullseye(Target):
 
     def __init__(self):
         super().__init__()
-        self.radius = cfg.target_radius*cfg.pixels_per_deg
         self.linewidth = cfg.target_line_width
-        self.color = cfg.target_color
         self.radii = [k*self.radius/8.0 for k in range(8,0,-1)]
         self.radii.append(0.25*self.radius/8.0)
         self.ring_colors = []
@@ -261,9 +285,6 @@ class ABC(Target):
 
     def __init__(self):
         super().__init__()
-        self.radius = cfg.target_radius*cfg.pixels_per_deg
-        self.color = cfg.target_color
-        self.background_color = cfg.background_color
         
     def draw(self, screen, origin=None):
         if origin is None:
@@ -276,7 +297,7 @@ class ABC(Target):
         x = self.position_vector.x+xoff
         y = self.position_vector.y+yoff
         
-        pygame.draw.circle(screen, self.color, pygame.Vector2(x,y),self.radius)
+        pygame.draw.circle(screen, self.foreground_color, pygame.Vector2(x,y),self.radius)
         bar_width = self.radius/4.0
         b1x = x-self.radius
         b1y = y-bar_width/2.0
@@ -290,7 +311,7 @@ class ABC(Target):
         r2 = pygame.Rect(b2x,b2y,b2w,b2h)
         pygame.draw.rect(screen,self.background_color,r1)
         pygame.draw.rect(screen,self.background_color,r2)
-        pygame.draw.circle(screen,self.color,pygame.Vector2(x,y),bar_width/2.0)
+        pygame.draw.circle(screen,self.foreground_color,pygame.Vector2(x,y),bar_width/2.0)
 
             
 class Inset:
@@ -406,9 +427,9 @@ class CheckerBoard(Inset):
         ry = 0
 
         colors = [cfg.checkerboard_bright,cfg.checkerboard_dark]
-        for row in range(cfg.checkerboard_n_rows):
+        for row in range(int(cfg.checkerboard_n_rows)):
             rx = 0
-            for col in range(cfg.checkerboard_n_cols):
+            for col in range(int(cfg.checkerboard_n_cols)):
                 rect = pygame.Rect(rx,ry,rwidth,rheight)
                 pygame.draw.rect(self.s1,colors[(row+col)%2],rect)
                 pygame.draw.rect(self.s2,colors[(row+col+1)%2],rect)
@@ -474,15 +495,28 @@ class Grating(Inset):
         
 
         
-if cfg.target_type=='bullseye':
-    tar = Bullseye()
-elif cfg.target_type=='star':
-    tar = Star()
-elif cfg.target_type=='ABC':
-    tar = ABC()
-else:
-    sys.exit('%s is an invalid target_type in config.py')
+# if cfg.target_type=='bullseye':
+#     tar = Bullseye()
+# elif cfg.target_type=='star':
+#     tar = Star()
+# elif cfg.target_type=='ABC':
+#     tar = ABC()
+# else:
+#     sys.exit('%s is an invalid target_type in config.py')
+
+tar_dict = {'bullseye':Bullseye,
+            'star':Star,
+            'ABC':ABC}
+try:
+    tar = tar_dict[cfg.target_type]()
+except KeyError as ke:
+    print('KeyError: '+ke)
+    sys.exit('config.%s is not a valid target type'%cfg.target_type)
     
+tar_keys = list(tar_dict.keys())
+n_tars = len(tar_keys)
+tar_index = tar_keys.index(cfg.target_type)
+
 origin = Origin()
     
 step = cfg.target_step*cfg.pixels_per_deg
@@ -590,17 +624,37 @@ while running:
                 else:
                     inset.toggle()
                     
+            if event.key == pygame.K_t:
+                if mods & pygame.KMOD_CTRL:
+                    tar_index = (tar_index+1)%n_tars
+                    pv = tar.position_vector
+                    tar = tar_dict[tar_keys[tar_index]]()
+                    tar.position_vector = pv
                 
             if event.key in [pygame.K_ESCAPE,pygame.K_q]:
                 running = False
 
-            if event.key == pygame.K_t:
+            if event.key == pygame.K_w:
                 write_test_file()
 
             if event.key == pygame.K_SPACE:
                 eye_index = (eye_index + 1)%2
                 eye = eyes[eye_index]
 
+
+            if event.key == pygame.K_f:
+                if mods & pygame.KMOD_SHIFT:
+                    tar.brightenfg()
+                else:
+                    tar.darkenfg()
+                    
+            if event.key == pygame.K_b:
+                if mods & pygame.KMOD_SHIFT:
+                    tar.brightenbg()
+                    bgc = tar.background_color
+                else:
+                    tar.darkenbg()
+                    bgc = tar.background_color
             
     # fill the screen with a color to wipe away anything from last frame
     screen.fill(bgc)
