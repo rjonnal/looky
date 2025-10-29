@@ -51,6 +51,10 @@ These instructions assume that you are using the [Anaconda](https://www.anaconda
 
 <kbd>w</kbd>: Write a test file to `data_monitoring_folder` to see if data monitoring and auto-advancing are functioning correctly.
 
+### Location scripts
+
+If the folder containing `looky.py` contains another Python file called `location_script.py`, then looky will try to import `location_script` from `location_script` (i.e., `location_script.py` should express a variable called `location_script`). That variable should define a list of `(x,y)` tuples, where each value of `x` and `y` is a retinal eccentricity in degrees. In looky, the script can be navigated using the <kbd>PageUp</kbd> and <kbd>PageDown</kbd> keys.
+
 ### Config file `config.py` settings
 
 #### Data monitorning and auto-advance

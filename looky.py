@@ -7,8 +7,9 @@ from watchdog.events import LoggingEventHandler, FileSystemEventHandler
 import numpy as np
 from matplotlib import pyplot as plt
 
-eyes = ['RE','LE']
 
+# prompt for eye; set cfg.prompt_for_eye to False to stop this behavior
+eyes = ['RE','LE']
 if cfg.prompt_for_eye:
     eye = input('Eye: RE or LE? (%s) '%cfg.default_eye).upper()
 else:
@@ -25,6 +26,9 @@ except AssertionError as ae:
 
 eye_index = eyes.index(eye)
 
+
+
+# load location script
 try:
     from location_script import location_script
 except ImportError:
@@ -95,8 +99,8 @@ class Target:
     
     def __init__(self,step=None,small_step=None):
         self.location_index = 0
-        #x,y = [k*cfg.pixels_per_deg for k in location_script[self.location_index]]
-        x,y = 0.0,0.0
+        x,y = [k*cfg.pixels_per_deg for k in location_script[self.location_index]]
+        #x,y = 0.0,0.0
         
         self.position_vector = pygame.Vector2(x,y)
         if step is None:
@@ -483,7 +487,7 @@ class Grating(Inset):
         self.surface = pygame.surfarray.make_surface(self.grating3)
         
         px_per_cycle = npix/n_cycles
-        self.nroll = cfg.grating_cycles_per_second*px_per_cycle/cfg.grating_frequency
+        self.nroll = int(round(cfg.grating_cycles_per_second*px_per_cycle/cfg.grating_frequency))
         
     def update(self):
         if self.orientation=='vertical':
@@ -678,11 +682,16 @@ while running:
     except Exception as e:
         print(e)
         lidx = -1
+
+    if len(location_script)>1:
+        script_message = 'off script'
+    else:
+        script_message = 'no script'
         
     if lidx>-1:
         message = '%s: %s (loc %d)'%(eye,tar.ecc(),lidx)
     else:
-        message = '%s: %s (off script)'%(eye,tar.ecc())
+        message = '%s: %s (%s)'%(eye,tar.ecc(),script_message)
         
     if origin_mode:
         ox_px = origin.position_vector.x

@@ -17,7 +17,7 @@ target_radius = 1.0 #deg
 target_step = 0.5
 target_small_step = 0.125
 
-target_type = 'ABC' # 'star' or 'bullseye' or 'ABC' for now
+target_type = 'ABC' # 'star' or 'bullseye' or 'ABC'
 inset_type = 'checkerboard' # 'grating' or 'deadleaves' or 'checkerboard'
 
 color_increment = 5
