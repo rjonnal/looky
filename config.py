@@ -56,8 +56,8 @@ deadleaves_gray_mean = 127
 deadleaves_frequency = 6
 deadleaves_seed = 1234
 
-grating_frequency = 30
-grating_interval_deg = 1
+grating_frequency_fps = 30
+grating_period_deg = 1
 grating_cycles_per_second = 5
 grating_orientation = 'horizontal'
 

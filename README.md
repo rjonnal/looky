@@ -119,3 +119,45 @@ A random seed for the deadleaves images.
 ```
 deadleaves_seed = 1234
 ```
+
+#### Drifting grating configuration
+
+The update rate in frames per second for the drifting grating visualization:
+```
+grating_frequency = 30
+```
+
+The spatial period of the grating in degrees:
+```
+grating_period_deg = 1
+```
+
+The drift speed in cycles per second:
+```
+grating_cycles_per_second = 5
+```
+
+The orientation of the grating:
+```
+grating_orientation = 'vertical'
+```
+
+#### Counterphase checkerboard (pERG) configuration
+
+The counterphase update rate, i.e. the 'flicker' rate:
+```
+checkerboard_frequency = 5
+```
+
+The numbers of columns and rows, defined in terms of the width of the inset image:
+```
+checkerboard_n_cols = inset_width_deg
+checkerboard_n_rows = inset_height_deg
+```
+
+The colors of the bright and dark squares:
+```
+checkerboard_bright = (255,255,255)
+checkerboard_dark = (0,0,0)```
+```
+

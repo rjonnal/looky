@@ -460,16 +460,16 @@ class Grating(Inset):
                          cfg.inset_height_deg*cfg.pixels_per_deg,
                          cfg.inset_x_deg*cfg.pixels_per_deg,
                          cfg.inset_y_deg*cfg.pixels_per_deg,
-                         cfg.grating_frequency)
+                         cfg.grating_frequency_fps)
 
         self.orientation = cfg.grating_orientation
         sc = 3
         self.grating = np.zeros((self.width,self.height),dtype=np.uint8)
 
         if self.orientation=='vertical':
-            n_cycles = cfg.inset_width_deg/cfg.grating_interval_deg
+            n_cycles = cfg.inset_width_deg/cfg.grating_period_deg
         else:
-            n_cycles = cfg.inset_height_deg/cfg.grating_interval_deg
+            n_cycles = cfg.inset_height_deg/cfg.grating_period_deg
         
         XX,YY = np.meshgrid(np.arange(self.height),np.arange(self.width))
         YY = YY/self.width*2*np.pi*n_cycles
@@ -487,7 +487,7 @@ class Grating(Inset):
         self.surface = pygame.surfarray.make_surface(self.grating3)
         
         px_per_cycle = npix/n_cycles
-        self.nroll = int(round(cfg.grating_cycles_per_second*px_per_cycle/cfg.grating_frequency))
+        self.nroll = int(round(cfg.grating_cycles_per_second*px_per_cycle/cfg.grating_frequency_fps))
         
     def update(self):
         if self.orientation=='vertical':
