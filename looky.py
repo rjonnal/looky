@@ -6,7 +6,9 @@ from watchdog.observers import Observer
 from watchdog.events import LoggingEventHandler, FileSystemEventHandler
 import numpy as np
 from matplotlib import pyplot as plt
+import matplotlib
 
+#matplotlib.use("Qt5agg")
 
 # prompt for eye; set cfg.prompt_for_eye to False to stop this behavior
 eyes = ['RE','LE']
@@ -25,7 +27,6 @@ except AssertionError as ae:
     eye = cfg.default_eye
 
 eye_index = eyes.index(eye)
-
 
 
 # load location script
@@ -497,7 +498,32 @@ class Grating(Inset):
             
         self.surface = pygame.surfarray.make_surface(self.grating3)
         
+class UserWindow:
 
+    def __init__(self):
+        dpi = 300
+        sxpx,sypx = cfg.display_mode
+        sxin,syin = sxpx/dpi,sypx/dpi
+        plt.ion()
+        self.fig = plt.figure(figsize=(sxin,syin))
+        self.ax = self.fig.add_axes([0,0,1,1])
+        self.ax.set_xlim((0,sxpx))
+        self.ax.set_ylim((sypx,0))
+        self.ohandle = plt.plot(0,0,'r+',markersize=12)[0]
+        self.thandle = plt.plot(0,0,'ko',markersize=12)[0]
+        self.mhandle = plt.text(0,0,'foo',ha='left',va='top')
+        self.age = 0.0
+        self.fig.show()
+    def update(self,origin,target,message):
+        self.age = 0.0
+        self.ohandle.set_xdata([origin.position_vector.x])
+        self.ohandle.set_ydata([origin.position_vector.y])
+        self.thandle.set_xdata([origin.position_vector.x+target.position_vector.x])
+        self.thandle.set_ydata([origin.position_vector.y+target.position_vector.y])
+        
+        self.mhandle.set_text(message)
+        self.fig.canvas.flush_events()
+        
         
 # if cfg.target_type=='bullseye':
 #     tar = Bullseye()
@@ -566,6 +592,9 @@ def write_test_file():
     outfn = os.path.join(cfg.data_monitoring_folder,basefn)
     with open(outfn,'w') as fid:
         fid.write('0')
+
+if cfg.user_window:
+    uwin = UserWindow()
 
 while running:
     # poll for events
@@ -705,7 +734,13 @@ while running:
         log(message)
         print(message)
         tar.logged = True
-    
+
+
+    if cfg.user_window:
+        uwin.age = uwin.age + dt
+        if uwin.age > cfg.user_window_update_interval:
+            uwin.update(origin,tar,message)
+        
     # flip() the display to put your work on screen
     pygame.display.flip()
 

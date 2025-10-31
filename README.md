@@ -12,6 +12,7 @@ These instructions assume that you are using the [Anaconda](https://www.anaconda
 4. Install **watchdog** using pip (`pip install watchdog`) or conda (`conda install watchdog`)
 5. Clone this repo into your a folder that's in your PYTHONPATH. In CHOIR labs, this will typically be `/home/user/code` or `c:\code`. Move into the desired folder and issue `git clone https://github.com/rjonnal/looky`
 6. Edit `config.py` as necessary. In particular, set the value of `data_monitoring_folder` to a real folder in your filesystem where the acquired images will be written.
+7. If setting `user_window = True` in `config.py`, please install `matplotlib` with `conda install matplotlib`.
 
 #### To run:
 
@@ -40,12 +41,17 @@ These instructions assume that you are using the [Anaconda](https://www.anaconda
 <kbd>Alt</kbd>+<kbd>Shift</kbd>+<kbd>Left</kbd>: Move origin left (small step).
 <kbd>Alt</kbd>+<kbd>Shift</kbd>+<kbd>Right</kbd>: Move origin right (small step).
 
+<kbd>Shift</kbd>+<kbd>f</kbd>: Brighten the target.
+<kbd>f</kbd>: Darken the target.
+
+<kbd>Shift</kbd>+<kbd>b</kbd>: Brighten the background.
+<kbd>b</kbd>: Darken the background.
+
 <kbd>i</kbd>: Toggle inset image/video, e.g. dead leaves animation.
 
 <kbd>Ctrl</kbd>+<kbd>i</kbd>: Cycle through inset options.
 
 <kbd>Ctrl</kbd>+<kbd>t</kbd>: Cycle through target options.
-
 
 <kbd>PageDown</kbd>: Next location in location script.
 
@@ -76,6 +82,9 @@ If `data_monitoring` is `True`, **looky** will monitor the folder `data_monitori
 
 If `auto_advance` is `True`, then **looky** will automatically go to the next location in the location script whenever new data is written to the `data_monitoring_folder` matching one of the extensions in `data_monitoring_extensions`.
 
+#### User window
+
+If `user_window = True`, **looky** will generate a small version of the fixation target in a separate window, showing the origin, target location, and eccentricity message. This requires installation of `matplotlib`.
 
 #### Dead leaves configuration
 
