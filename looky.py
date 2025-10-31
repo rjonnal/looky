@@ -703,6 +703,7 @@ while running:
     
     if tar.age > cfg.logging_interval and not tar.logged:
         log(message)
+        print(message)
         tar.logged = True
     
     # flip() the display to put your work on screen
