@@ -12,8 +12,13 @@ data_monitoring_folder = '/home/rjonnal/code/looky/testing'
 data_monitoring_extensions = ['.unp']
 auto_advance = True # automatically advance the script index when new data is detected
 
+# configure 
+external_script_o = 'C:\FDML_data\single_flash_labjack.py'
+external_script_p = './external_script.py'
+
 user_window = False
 user_window_update_interval = 0.1
+user_window_dpi = 300 # increasing (decreasing) this makes the user window smaller (larger)
 
 target_line_width = 5
 target_radius = 1.0 #deg

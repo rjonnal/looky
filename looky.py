@@ -7,6 +7,7 @@ from watchdog.events import LoggingEventHandler, FileSystemEventHandler
 import numpy as np
 from matplotlib import pyplot as plt
 import matplotlib
+import subprocess
 
 #matplotlib.use("Qt5agg")
 
@@ -207,7 +208,14 @@ class Target:
         self.background_color = tuple(newcolor)
 
 
-    
+def run_external_script(script):
+    """Run single_flash_labjack.py in background, open empty console, and run cycle_background after closing it."""
+    try:
+        # Start single_flash_labjack.py normally in background
+        subprocess.Popen([sys.executable, script])
+        print('%s started.'%script)
+    except Exception as e:
+        print('Error running %s: %s'%(script,e))
 
 class Origin(Target):
     
@@ -501,7 +509,7 @@ class Grating(Inset):
 class UserWindow:
 
     def __init__(self):
-        dpi = 300
+        dpi = cfg.user_window_dpi
         sxpx,sypx = cfg.display_mode
         sxin,syin = sxpx/dpi,sypx/dpi
         plt.ion()
@@ -525,14 +533,6 @@ class UserWindow:
         self.fig.canvas.flush_events()
         
         
-# if cfg.target_type=='bullseye':
-#     tar = Bullseye()
-# elif cfg.target_type=='star':
-#     tar = Star()
-# elif cfg.target_type=='ABC':
-#     tar = ABC()
-# else:
-#     sys.exit('%s is an invalid target_type in config.py')
 
 tar_dict = {'bullseye':Bullseye,
             'star':Star,
@@ -688,6 +688,12 @@ while running:
                 else:
                     tar.darkenbg()
                     bgc = tar.background_color
+
+            if event.key == pygame.K_o:
+                run_external_script(cfg.external_script_o)
+
+            if event.key == pygame.K_p:
+                run_external_script(cfg.external_script_p)
             
     # fill the screen with a color to wipe away anything from last frame
     screen.fill(bgc)

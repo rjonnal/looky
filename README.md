@@ -22,29 +22,43 @@ These instructions assume that you are using the [Anaconda](https://www.anaconda
 ### Keyboard shortcuts
 
 <kbd>Up</kbd>: Move target up.
+
 <kbd>Down</kbd>: Move target down.
+
 <kbd>Left</kbd>: Move target left.
+
 <kbd>Right</kbd>: Move target right.
 
 <kbd>Shift</kbd>+<kbd>Up</kbd>: Move target up (small step).
+
 <kbd>Shift</kbd>+<kbd>Down</kbd>: Move target down (small step).
+
 <kbd>Shift</kbd>+<kbd>Left</kbd>: Move target left (small step).
+
 <kbd>Shift</kbd>+<kbd>Right</kbd>: Move target right (small step).
 
 <kbd>Alt</kbd>+<kbd>Up</kbd>: Move origin up.
+
 <kbd>Alt</kbd>+<kbd>Down</kbd>: Move origin down.
+
 <kbd>Alt</kbd>+<kbd>Left</kbd>: Move origin left.
+
 <kbd>Alt</kbd>+<kbd>Right</kbd>: Move origin right.
 
 <kbd>Alt</kbd>+<kbd>Shift</kbd>+<kbd>Up</kbd>: Move origin up (small step).
+
 <kbd>Alt</kbd>+<kbd>Shift</kbd>+<kbd>Down</kbd>: Move origin down (small step).
+
 <kbd>Alt</kbd>+<kbd>Shift</kbd>+<kbd>Left</kbd>: Move origin left (small step).
+
 <kbd>Alt</kbd>+<kbd>Shift</kbd>+<kbd>Right</kbd>: Move origin right (small step).
 
 <kbd>Shift</kbd>+<kbd>f</kbd>: Brighten the target.
+
 <kbd>f</kbd>: Darken the target.
 
 <kbd>Shift</kbd>+<kbd>b</kbd>: Brighten the background.
+
 <kbd>b</kbd>: Darken the background.
 
 <kbd>i</kbd>: Toggle inset image/video, e.g. dead leaves animation.
@@ -56,6 +70,10 @@ These instructions assume that you are using the [Anaconda](https://www.anaconda
 <kbd>PageDown</kbd>: Next location in location script.
 
 <kbd>PageUp</kbd>: Previous location in location script.
+
+<kbd>o</kbd>: Run the Python script located at `config.external_script_o`.
+
+<kbd>p</kbd>: Run the Python script located at `config.external_script_p`.
 
 <kbd>Escape</kbd> or <kbd>q</kbd>: Quit.
 
@@ -81,6 +99,10 @@ auto_advance = True # automatically advance the script index when new data is de
 If `data_monitoring` is `True`, **looky** will monitor the folder `data_monitoring_folder` recursively to see if any files are written there. If a file is written there, its extension is compared to the items in the list `data_monitoring_extensions`, and if it matches one of those, **looky** writes the current location (retinal eccentricity) to a file accompanying the newly written data file.
 
 If `auto_advance` is `True`, then **looky** will automatically go to the next location in the location script whenever new data is written to the `data_monitoring_folder` matching one of the extensions in `data_monitoring_extensions`.
+
+#### External scripts
+
+The variables `config.external_script_o` and `config.external_script_p` can be set to Python scripts that are to be run from the **looky** interface, using the <kbd>o</kbd> and <kbd>p</kbd> keys, respectively.
 
 #### User window
 
@@ -171,6 +193,6 @@ checkerboard_n_rows = inset_height_deg
 The colors of the bright and dark squares:
 ```
 checkerboard_bright = (255,255,255)
-checkerboard_dark = (0,0,0)```
+checkerboard_dark = (0,0,0)
 ```
 
