@@ -108,6 +108,10 @@ The variables `config.external_script_o` and `config.external_script_p` can be s
 
 If `user_window = True`, **looky** will generate a small version of the fixation target in a separate window, showing the origin, target location, and eccentricity message. This requires installation of `matplotlib`.
 
+#### Beeps
+
+To configure **looky** to beep when the target moves, set `config.beep` to the location of a wav audio file. Two are included in `/data/wavs`.
+
 #### Dead leaves configuration
 
 Some basic parameters for setting up the inset screen:
