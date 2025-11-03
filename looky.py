@@ -49,6 +49,13 @@ os.makedirs(cfg.data_folder,exist_ok=True)
 logger = logging.getLogger(__name__)
 logging.basicConfig(filename=log_path, encoding='utf-8', level=logging.INFO)
 
+if cfg.beep is not None:
+    pygame.mixer.init()
+    do_beep = True
+    beep = pygame.mixer.Sound(cfg.beep)
+    beep.play()
+else:
+    do_beep = False
 
 with open(os.path.join(cfg.data_folder,'fonts_available.log'),'w') as fid:
     font_list = sorted(pygame.font.get_fonts())
@@ -141,6 +148,8 @@ class Target:
             self.position_vector.y+=dy
         self.logged = False
         self.age = 0.0
+        if do_beep:
+            beep.play()
 
     def left(self,fine=False):
         if fine:
@@ -512,6 +521,8 @@ class UserWindow:
         dpi = cfg.user_window_dpi
         sxpx,sypx = cfg.display_mode
         sxin,syin = sxpx/dpi,sypx/dpi
+        xborder = sxpx*0.01
+        yborder = sypx*0.01
         plt.ion()
         self.fig = plt.figure(figsize=(sxin,syin))
         self.ax = self.fig.add_axes([0,0,1,1])
@@ -519,7 +530,7 @@ class UserWindow:
         self.ax.set_ylim((sypx,0))
         self.ohandle = plt.plot(0,0,'r+',markersize=12)[0]
         self.thandle = plt.plot(0,0,'ko',markersize=12)[0]
-        self.mhandle = plt.text(0,0,'foo',ha='left',va='top')
+        self.mhandle = plt.text(xborder,yborder,'foo',ha='left',va='top')
         self.age = 0.0
         self.fig.show()
     def update(self,origin,target,message):
