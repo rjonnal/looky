@@ -110,7 +110,7 @@ If `user_window = True`, **looky** will generate a small version of the fixation
 
 #### Beeps
 
-To configure **looky** to beep when the target moves, set `config.beep` to the location of a wav audio file. Two are included in `/data/wavs`.
+To configure **looky** to beep when the target moves, set `config.beep` to the location of a wav audio file. Two are included in `/data/wavs`. Set `config.beep = None` to silence looky.
 
 #### Dead leaves configuration
 
