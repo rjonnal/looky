@@ -1,6 +1,6 @@
 display_mode = (1920,1080)
 monitor_number = 1
-pixels_per_deg = 36
+pixels_per_deg = 60
 foreground_color = (255, 255, 255)
 background_color = (0, 0, 0)
 
@@ -19,7 +19,7 @@ auto_advance = True # automatically advance the script index when new data is de
 external_script_o = 'C:\FDML_data\single_flash_labjack.py'
 external_script_p = './external_script.py'
 
-user_window = True
+user_window = False
 user_window_update_interval = 0.1
 user_window_dpi = 300 # increasing (decreasing) this makes the user window smaller (larger)
 
@@ -43,17 +43,31 @@ text_font_size = 24
 text_font = 'serif'
 
 origin_color = (255,0,0)
-origin_size_px = 50
+origin_size_px = pixels_per_deg*1.25
 origin_line_width = 2
 origin_step_px = 5
 origin_small_step_px = 1
 
 inset_background_color = (127, 127, 127)
 
-inset_width_deg = display_mode[0]/pixels_per_deg
-inset_height_deg = display_mode[1]/pixels_per_deg/2.0
+
+# A couple of ideas for configuring the stimulus inset can be found
+# in /figures/configurations.pdf
+
+inset_width_deg = 15.0#display_mode[0]/pixels_per_deg
+inset_height_deg = 5.0#display_mode[1]/pixels_per_deg/2.0
+
+# settings for control case, inset not overlapped with imaging area
+# presuming that the scan length is 2.5 deg and inset_height = 5.0.
+# place the fixation target at 1.25 deg inferior and a few degrees nasal.
 inset_x_deg = 0.0
-inset_y_deg = inset_height_deg/2.0
+inset_y_deg = 3.75
+
+# settings for stimulus case, inset overlapped with imaging area
+# presuming that the scan length is 2.5 deg and inset_height = 5.0.
+# place the fixation target at 1.25 deg inferior and a few degrees nasal.
+# inset_x_deg = 0.0
+# inset_y_deg = -1.25
 
 deadleaves_rad_mean_deg = 0.25
 deadleaves_rad_std_deg = 0.2

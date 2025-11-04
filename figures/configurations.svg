@@ -1,0 +1,351 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="210mm"
+   height="297mm"
+   viewBox="0 0 210 297"
+   version="1.1"
+   id="svg5"
+   inkscape:version="1.2.2 (b0a8486541, 2022-12-01)"
+   sodipodi:docname="configurations.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm"
+     showgrid="false"
+     inkscape:zoom="1.0544998"
+     inkscape:cx="265.52874"
+     inkscape:cy="379.32678"
+     inkscape:window-width="1920"
+     inkscape:window-height="977"
+     inkscape:window-x="0"
+     inkscape:window-y="32"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs2">
+    <pattern
+       inkscape:collect="always"
+       xlink:href="#Checkerboard"
+       id="pattern3523"
+       patternTransform="matrix(10.395528,0,0,11.28464,-5.9671205,-13.719001)" />
+    <pattern
+       inkscape:collect="always"
+       patternUnits="userSpaceOnUse"
+       width="2"
+       height="2"
+       patternTransform="translate(0,0) scale(10,10)"
+       id="Checkerboard"
+       inkscape:stockid="Checkerboard">
+      <rect
+         style="fill:black;stroke:none"
+         x="0"
+         y="0"
+         width="1"
+         height="1"
+         id="rect2614" />
+      <rect
+         style="fill:black;stroke:none"
+         x="1"
+         y="1"
+         width="1"
+         height="1"
+         id="rect2616" />
+    </pattern>
+    <pattern
+       inkscape:collect="always"
+       xlink:href="#Checkerboard-2"
+       id="pattern3523-0"
+       patternTransform="matrix(10.395528,0,0,11.28464,-5.9671205,-13.719001)" />
+    <pattern
+       inkscape:collect="always"
+       patternUnits="userSpaceOnUse"
+       width="2"
+       height="2"
+       patternTransform="translate(0,0) scale(10,10)"
+       id="Checkerboard-2"
+       inkscape:stockid="Checkerboard">
+      <rect
+         style="fill:black;stroke:none"
+         x="0"
+         y="0"
+         width="1"
+         height="1"
+         id="rect2614-3" />
+      <rect
+         style="fill:black;stroke:none"
+         x="1"
+         y="1"
+         width="1"
+         height="1"
+         id="rect2616-7" />
+    </pattern>
+  </defs>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <g
+       id="g4275">
+      <path
+         style="fill:none;stroke:#ff0000;stroke-width:0.980929;stroke-dasharray:none"
+         d="M 101.9063,22.920629 V 47.92064"
+         id="path256" />
+      <text
+         xml:space="preserve"
+         style="font-size:2.82222px;font-family:Arial;-inkscape-font-specification:Arial;text-align:center;text-anchor:middle;fill:none;stroke:#ff0000;stroke-width:1;stroke-dasharray:none"
+         x="-35.399963"
+         y="98.863396"
+         id="text1028"
+         transform="rotate(-90)"><tspan
+           sodipodi:role="line"
+           id="tspan1026"
+           style="font-size:2.82222px;fill:#ff0000;stroke:none;stroke-width:1"
+           x="-35.399963"
+           y="98.863396">OCT scan line (2.5 deg)</tspan></text>
+      <g
+         id="g1294"
+         transform="matrix(0.53413027,0,0,0.53413027,57.130882,-18.183107)">
+        <path
+           style="fill:#ff0000;stroke:#800000;stroke-width:1;stroke-dasharray:none"
+           d="m 83.819959,95.977301 v 8.759509"
+           id="path1209" />
+        <path
+           style="fill:#ff0000;stroke:#800000;stroke-width:1;stroke-dasharray:none"
+           d="m 79.440209,100.35706 h 8.7595"
+           id="path1209-3" />
+      </g>
+      <text
+         xml:space="preserve"
+         style="font-size:2.82223px;font-family:Arial;-inkscape-font-specification:Arial;text-align:center;text-anchor:middle;fill:#800000;stroke:none;stroke-width:1;stroke-dasharray:none"
+         x="112.54367"
+         y="36.43914"
+         id="text1358"><tspan
+           sodipodi:role="line"
+           id="tspan1356"
+           style="fill:#800000;stroke:none;stroke-width:1"
+           x="112.54367"
+           y="36.43914">looky origin</tspan></text>
+      <g
+         id="g4180"
+         transform="translate(2.6381821,-80.63825)">
+        <text
+           xml:space="preserve"
+           style="font-size:2.82223px;font-family:Arial;-inkscape-font-specification:Arial;text-align:center;text-anchor:middle;fill:#000000;stroke:none;stroke-width:1;stroke-dasharray:none"
+           x="25.493738"
+           y="132.36899"
+           id="text1358-6"><tspan
+             sodipodi:role="line"
+             id="tspan1356-7"
+             style="text-align:start;text-anchor:start;fill:#000000;stroke:none;stroke-width:1"
+             x="25.493738"
+             y="132.36899">stimulus inset (15 deg x 5 deg)</tspan></text>
+        <rect
+           style="opacity:0.330881;fill:url(#pattern3523);fill-opacity:1;stroke:none;stroke-width:1.08309;stroke-dasharray:none"
+           id="rect1524"
+           width="150"
+           height="50"
+           x="24.268118"
+           y="128.72516"
+           ry="0.17467827" />
+      </g>
+      <g
+         id="g3884"
+         transform="translate(-39.217533,-23.173463)">
+        <path
+           sodipodi:type="star"
+           style="opacity:1;fill:#008000;fill-opacity:1;stroke:none;stroke-width:1;stroke-dasharray:none"
+           id="path3823"
+           inkscape:flatsided="false"
+           sodipodi:sides="8"
+           sodipodi:cx="98.600632"
+           sodipodi:cy="71.022377"
+           sodipodi:r1="7.5000429"
+           sodipodi:r2="0.93988389"
+           sodipodi:arg1="0.8012919"
+           sodipodi:arg2="1.1895309"
+           inkscape:rounded="0"
+           inkscape:randomized="0"
+           d="m 103.81901,76.409325 -4.868652,-4.514553 -0.468925,6.626701 -0.250384,-6.634926 -5.017365,4.354205 4.514553,-4.868649 -6.626701,-0.468925 6.634925,-0.250384 -4.354204,-5.017365 4.868648,4.514553 0.468925,-6.626701 0.250384,6.634926 5.017366,-4.354205 -4.514553,4.868649 6.626703,0.468925 -6.634928,0.250384 z"
+           inkscape:transform-center-x="-0.095042523"
+           inkscape:transform-center-y="-0.65068566" />
+        <text
+           xml:space="preserve"
+           style="font-size:2.82223px;font-family:Arial;-inkscape-font-specification:Arial;text-align:start;text-anchor:start;opacity:1;fill:#008000;fill-opacity:1;stroke:none;stroke-width:1;stroke-dasharray:none"
+           x="102.39048"
+           y="69.901779"
+           id="text3879"><tspan
+             sodipodi:role="line"
+             id="tspan3877"
+             style="stroke-width:1"
+             x="102.39048"
+             y="69.901779">fixation target</tspan></text>
+      </g>
+      <text
+         xml:space="preserve"
+         style="font-size:3.52778px;font-family:Arial;-inkscape-font-specification:Arial;text-align:start;text-anchor:start;opacity:1;fill:#008000;fill-opacity:1;stroke:none;stroke-width:1;stroke-dasharray:none"
+         x="28.085802"
+         y="23.895605"
+         id="text4196"><tspan
+           sodipodi:role="line"
+           id="tspan4194"
+           style="font-size:3.52778px;fill:#000000;stroke-width:1"
+           x="28.085802"
+           y="23.895605"><tspan
+   style="font-weight:bold;font-size:3.52778px"
+   id="tspan4251">Control configuration</tspan>:</tspan><tspan
+           sodipodi:role="line"
+           style="font-size:3.52778px;fill:#000000;stroke-width:1"
+           x="28.085802"
+           y="28.30533"
+           id="tspan4245">fixation target 1.25I, 3.0N</tspan><tspan
+           sodipodi:role="line"
+           style="font-size:3.52778px;fill:#000000;stroke-width:1"
+           x="28.085802"
+           y="32.715054"
+           id="tspan4247">inset_x_deg = 0.0</tspan><tspan
+           sodipodi:role="line"
+           style="font-size:3.52778px;fill:#000000;stroke-width:1"
+           x="28.085802"
+           y="37.124779"
+           id="tspan4249">inset_y_deg = 3.75</tspan></text>
+    </g>
+    <g
+       id="g4516">
+      <path
+         style="fill:none;stroke:#ff0000;stroke-width:0.980929;stroke-dasharray:none"
+         d="m 101.74374,153.45467 v 25.00001"
+         id="path256-9" />
+      <text
+         xml:space="preserve"
+         style="font-size:2.82222px;font-family:Arial;-inkscape-font-specification:Arial;text-align:center;text-anchor:middle;fill:none;stroke:#ff0000;stroke-width:1;stroke-dasharray:none"
+         x="-165.93401"
+         y="98.700836"
+         id="text1028-2"
+         transform="rotate(-90)"><tspan
+           sodipodi:role="line"
+           id="tspan1026-2"
+           style="font-size:2.82222px;fill:#ff0000;stroke:none;stroke-width:1"
+           x="-165.93401"
+           y="98.700836">OCT scan line (2.5 deg)</tspan></text>
+      <g
+         id="g1294-8"
+         transform="matrix(0.53413027,0,0,0.53413027,56.968323,112.35094)">
+        <path
+           style="fill:#ff0000;stroke:#800000;stroke-width:1;stroke-dasharray:none"
+           d="m 83.819959,95.977301 v 8.759509"
+           id="path1209-9" />
+        <path
+           style="fill:#ff0000;stroke:#800000;stroke-width:1;stroke-dasharray:none"
+           d="m 79.440209,100.35706 h 8.7595"
+           id="path1209-3-7" />
+      </g>
+      <text
+         xml:space="preserve"
+         style="font-size:2.82223px;font-family:Arial;-inkscape-font-specification:Arial;text-align:center;text-anchor:middle;fill:#800000;stroke:none;stroke-width:1;stroke-dasharray:none"
+         x="112.38111"
+         y="166.97319"
+         id="text1358-3"><tspan
+           sodipodi:role="line"
+           id="tspan1356-6"
+           style="fill:#800000;stroke:none;stroke-width:1"
+           x="112.38111"
+           y="166.97319">looky origin</tspan></text>
+      <g
+         id="g4180-1"
+         transform="translate(2.4756235,-0.37505886)">
+        <text
+           xml:space="preserve"
+           style="font-size:2.82223px;font-family:Arial;-inkscape-font-specification:Arial;text-align:center;text-anchor:middle;fill:#000000;stroke:none;stroke-width:1;stroke-dasharray:none"
+           x="25.493738"
+           y="132.36899"
+           id="text1358-6-2"><tspan
+             sodipodi:role="line"
+             id="tspan1356-7-9"
+             style="text-align:start;text-anchor:start;fill:#000000;stroke:none;stroke-width:1"
+             x="25.493738"
+             y="132.36899">stimulus inset (15 deg x 5 deg)</tspan></text>
+        <rect
+           style="opacity:0.330881;fill:url(#pattern3523-0);fill-opacity:1;stroke:none;stroke-width:1.08309;stroke-dasharray:none"
+           id="rect1524-3"
+           width="150"
+           height="50"
+           x="24.268118"
+           y="128.72516"
+           ry="0.17467827" />
+      </g>
+      <g
+         id="g3884-1"
+         transform="translate(-39.380092,107.36058)">
+        <path
+           sodipodi:type="star"
+           style="opacity:1;fill:#008000;fill-opacity:1;stroke:none;stroke-width:1;stroke-dasharray:none"
+           id="path3823-9"
+           inkscape:flatsided="false"
+           sodipodi:sides="8"
+           sodipodi:cx="98.600632"
+           sodipodi:cy="71.022377"
+           sodipodi:r1="7.5000429"
+           sodipodi:r2="0.93988389"
+           sodipodi:arg1="0.8012919"
+           sodipodi:arg2="1.1895309"
+           inkscape:rounded="0"
+           inkscape:randomized="0"
+           d="m 103.81901,76.409325 -4.868652,-4.514553 -0.468925,6.626701 -0.250384,-6.634926 -5.017365,4.354205 4.514553,-4.868649 -6.626701,-0.468925 6.634925,-0.250384 -4.354204,-5.017365 4.868648,4.514553 0.468925,-6.626701 0.250384,6.634926 5.017366,-4.354205 -4.514553,4.868649 6.626703,0.468925 -6.634928,0.250384 z"
+           inkscape:transform-center-x="-0.095042523"
+           inkscape:transform-center-y="-0.65068566" />
+        <text
+           xml:space="preserve"
+           style="font-size:2.82223px;font-family:Arial;-inkscape-font-specification:Arial;text-align:start;text-anchor:start;opacity:1;fill:#008000;fill-opacity:1;stroke:none;stroke-width:1;stroke-dasharray:none"
+           x="102.39048"
+           y="69.901779"
+           id="text3879-4"><tspan
+             sodipodi:role="line"
+             id="tspan3877-7"
+             style="stroke-width:1"
+             x="102.39048"
+             y="69.901779">fixation target</tspan></text>
+      </g>
+    </g>
+    <text
+       xml:space="preserve"
+       style="font-size:3.52778px;font-family:Arial;-inkscape-font-specification:Arial;text-align:start;text-anchor:start;fill:#008000;fill-opacity:1;stroke:none;stroke-width:1;stroke-dasharray:none"
+       x="26.469446"
+       y="108.41759"
+       id="text4196-8"><tspan
+         sodipodi:role="line"
+         id="tspan4194-4"
+         style="font-size:3.52778px;fill:#000000;stroke-width:1"
+         x="26.469446"
+         y="108.41759"><tspan
+   style="font-weight:bold;font-size:3.52778px"
+   id="tspan4251-5">Stimulus configuration</tspan>:</tspan><tspan
+         sodipodi:role="line"
+         style="font-size:3.52778px;fill:#000000;stroke-width:1"
+         x="26.469446"
+         y="112.82731"
+         id="tspan4245-0">fixation target 1.25I, 3.0N</tspan><tspan
+         sodipodi:role="line"
+         style="font-size:3.52778px;fill:#000000;stroke-width:1"
+         x="26.469446"
+         y="117.23704"
+         id="tspan4247-3">inset_x_deg = 0.0</tspan><tspan
+         sodipodi:role="line"
+         style="font-size:3.52778px;fill:#000000;stroke-width:1"
+         x="26.469446"
+         y="121.64676"
+         id="tspan4249-6">inset_y_deg = -1.25</tspan></text>
+  </g>
+</svg>
