@@ -29,6 +29,7 @@ except AssertionError as ae:
 
 eye_index = eyes.index(eye)
 
+auto_advance = cfg.auto_advance_default
 
 # load location script
 try:
@@ -96,7 +97,7 @@ class ObserverHandler(FileSystemEventHandler):
                 assert os.path.exists(outfn)
             except AssertionError:
                 sys.exit('ObserverHandler failed to write .looky file.')
-            if cfg.auto_advance:
+            if auto_advance:
                 self.target.next()
             log('%s file found at %s, eccentricity written to %s'%(ext,filename,outfn))
             log('Auto-advance to %s'%self.target.ecc())
@@ -700,6 +701,12 @@ while running:
                     tar.darkenbg()
                     bgc = tar.background_color
 
+            if event.key == pygame.K_c:
+                tar.move(0,0,True)
+
+            if event.key == pygame.K_a:
+                auto_advance = not auto_advance
+
             if event.key == pygame.K_o:
                 run_external_script(cfg.external_script_o)
 
@@ -733,11 +740,16 @@ while running:
         script_message = 'off script'
     else:
         script_message = 'no script'
+
+    if auto_advance:
+        aa_message = 'AA'
+    else:
+        aa_message = ''
         
     if lidx>-1:
-        message = '%s: %s (loc %d)'%(eye,tar.ecc(),lidx)
+        message = '%s: %s (loc %d) %s'%(eye,tar.ecc(),lidx,aa_message)
     else:
-        message = '%s: %s (%s)'%(eye,tar.ecc(),script_message)
+        message = '%s: %s (%s) %s'%(eye,tar.ecc(),script_message,aa_message)
         
     if origin_mode:
         ox_px = origin.position_vector.x
